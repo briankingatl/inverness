@@ -1,0 +1,107 @@
+{
+  "intro": {
+    "eyebrow": "The Calendar",
+    "title": "Community gatherings with a neighborly spirit.",
+    "text": "Our Social Committee puts together a full season of neighborhood happenings — something for kids, parents, and anyone who enjoys good company. We kick things off with the Memorial Day Pool Party (think DJ, live music, and a long, lazy lunch), keep summer mellow with dive‑in movie nights, and stitch the year together with back‑to‑school socials, a Fall Festival, Halloween Costumes & Cocktails, and a cozy Breakfast with Santa. Watch the community messaging group for invites and sign‑ups."
+  },
+  "scrapbook": [
+    {
+      "title": "Easter Egg Hunt",
+      "date": "Easter",
+      "image": "https://www.invernesshoa.org/data/siteimages/Amenities/Social/social-tn1.jpg",
+      "alt": "Easter Celebration",
+      "top": "4%",
+      "left": "6%",
+      "rotation": "-9"
+    },
+    {
+      "title": "Memorial Day Party",
+      "date": "Memorial Day Weekend",
+      "image": "https://www.invernesshoa.org/data/siteimages/Amenities/Social/bkg-social1.jpg",
+      "alt": "Memorial Day party",
+      "top": "2%",
+      "left": "30%",
+      "rotation": "5"
+    },
+    {
+      "title": "Halloween Costumes & Cocktails",
+      "date": "Halloween",
+      "image": "https://www.invernesshoa.org/data/siteimages/Amenities/Social/social-tn4.jpg",
+      "alt": "Halloween costumes and cocktails",
+      "top": "8%",
+      "left": "65%",
+      "rotation": "-6"
+    },
+    {
+      "title": "Fall Festival",
+      "date": "October",
+      "image": "https://www.invernesshoa.org/data/siteimages/Amenities/Social/social-tn2.jpg",
+      "alt": "Fall Festival",
+      "top": "36%",
+      "left": "12%",
+      "rotation": "11"
+    },
+    {
+      "title": "Kentucky Derby Party",
+      "date": "First Saturday in May",
+      "image": "https://www.invernesshoa.org/data/siteimages/Amenities/Social/The%20Hosts.jpg",
+      "alt": "The hosts",
+      "top": "32%",
+      "left": "38%",
+      "rotation": "-3"
+    },
+    {
+      "title": "Breakfast with Santa",
+      "date": "Christmastime",
+      "image": "https://www.invernesshoa.org/data/siteimages/Amenities/Social/social-tn3.jpg",
+      "alt": "Breakfast with Santa",
+      "top": "55%",
+      "left": "62%",
+      "rotation": "7"
+    }
+  ],
+  "seasonal": [
+    {
+      "num": "i.",
+      "event": "Easter Egg Hunt",
+      "detail": "Pancakes, coffee, and hundreds of hidden eggs — the kids run the show while neighbors trade stories over morning coffee.",
+      "date": "Easter"
+    },
+    {
+      "num": "ii.",
+      "event": "Memorial Day Party",
+      "detail": "Our biggest bash — poolside music, a DJ or band, catered food, and plenty of cold drinks to welcome summer (and the Stingrays' season).",
+      "date": "Memorial Day Weekend"
+    },
+    {
+      "num": "iii.",
+      "event": "Dive‑in Movie Nights",
+      "detail": "Float in the pool or lounge on the terrace — popcorn and a big screen under the stars.",
+      "date": "Summer Evenings"
+    },
+    {
+      "num": "iv.",
+      "event": "Back‑to‑School Social",
+      "detail": "A low‑key neighborhood mixer to mark the new school year — families welcome.",
+      "date": "Late August"
+    },
+    {
+      "num": "v.",
+      "event": "Fall Festival",
+      "detail": "Pumpkins, crafts, and seasonal treats — an autumn afternoon of neighborhood fun.",
+      "date": "October"
+    },
+    {
+      "num": "vi.",
+      "event": "Halloween Costumes & Cocktails",
+      "detail": "An adults' night with themed drinks and spirited costumes — a grown‑ups take on Halloween.",
+      "date": "Halloween"
+    },
+    {
+      "num": "vii.",
+      "event": "Christmas Breakfast with Santa",
+      "detail": "Donuts, hot cocoa, crafts, and a visit from Santa — a cozy morning the kids remember.",
+      "date": "Early December"
+    }
+  ]
+}

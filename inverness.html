@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inverness — A peaceful life on the Chattahoochee, Roswell, Georgia</title>
+<meta name="description" content="A Homeowner's Association of 260 homes across three enclaves — Inverness, Riverview, and Riverbluff — on the Chattahoochee River in Roswell, Georgia.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Caveat:wght@400;500&display=swap">
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<!-- Site styles -->
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body>
+
+<!-- ============== NAV ============== -->
+<nav class="nav" id="nav">
+  <a class="nav__brand" id="navBrand" aria-label="Inverness — home">
+    <span class="nav__brand-mark">Inverness</span>
+    <span class="nav__brand-sub">Roswell · Georgia</span>
+  </a>
+  <ul class="nav__links" id="navLinks">
+    <li><a class="nav__link" data-nav="home">Overview</a></li>
+    <li><a class="nav__link" data-nav="amenities">Amenities</a></li>
+    <li><a class="nav__link" data-nav="events">Calendar</a></li>
+    <li><a class="nav__link" data-nav="location">Location</a></li>
+  </ul>
+  <div class="nav__cta">
+    <a class="nav__signin" href="https://portal.accessmgt.com/public" target="_blank" rel="noopener noreferrer">
+      Resident Sign-In
+    </a>
+    <button class="nav__mobile-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<main id="app">
+
+  <!-- ============== HOME PAGE ============== -->
+  <div class="page is-active" data-page="home">
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero__bg">
+        <img src="https://www.invernesshoa.org/data/siteimages/Background/background.jpg" alt="Inverness neighborhood in Roswell, Georgia">
+      </div>
+      <div class="hero__overlay"></div>
+      <div class="hero__content">
+        <div class="eyebrow hero__eyebrow"><span>Est. 1986 · North Fulton County</span></div>
+        <h1 class="hero__title">
+          <span class="line"><span class="inner">A peaceful</span></span>
+          <span class="line"><span class="inner">life on the <em>Chattahoochee,</em></span></span>
+          <span class="line"><span class="inner">near historic Roswell.</span></span>
+        </h1>
+        <p class="hero__sub">
+          Two hundred and sixty homes across three enclaves — Inverness, Riverview, and Riverbluff — set among dogwood, oak, and pine, with the river bending wide just south of us and the old mill square a short walk east.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" data-nav="amenities">Explore the grounds <span class="arr">→</span></a>
+          <a class="btn btn--ghost btn--ghost--light" data-nav="location">See the location</a>
+        </div>
+      </div>
+      <div class="hero__meta">
+        <span class="hero__meta-row">34° 00′ 67″ N</span>
+        <span class="hero__meta-row">-84° 38′ 42″ W</span>
+        <span class="hero__meta-row hero__meta-coord">Elevation 1,050 ft</span>
+      </div>
+      <div class="hero__scroll">
+        <span>Scroll</span>
+        <span class="hero__scroll-line"></span>
+      </div>
+    </section>
+
+    <!-- OVERVIEW / MANIFEST -->
+    <section class="overview" data-reveal>
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow"><span>The Quarter Notes</span></div>
+          <h2>An unhurried stretch of north Atlanta, kept that way on purpose.</h2>
+          <p class="lead">Inverness was established in 1986 along a quiet ridge above the Chattahoochee, the river bending wide just south of us. The neighborhood has matured into one of Roswell's most established addresses — known less for grandeur than for character and beauty.</p>
+        </div>
+
+        <div class="overview__grid">
+          <div class="overview__text">
+            <p>The streets here are named for what grows along them — Azalea, Camellia, Wisteria, Dogwood — and the original plantings have had nearly forty years to do their work. In April the canopy is so thick over Azalea Drive that the afternoon arrives in a green half-light, and the clubhouse seems to float in it.</p>
+            <p>Inverness is in fact three enclaves under one trust: the original Inverness section, laid out in 1986; Riverview, where the lots grow larger as they approach the river bluff; and Riverbluff, the newest of the three, with the highest ground and the longest views. Two hundred and sixty homes in all, with covenants written to keep the streetscape consistent without erasing the personality of any one house.</p>
+            <p>What sets Inverness apart is less what is inside it than what is beside it. The Chattahoochee Nature Center is our next-door neight; the river itself is a ten-minute walk through the wood; and the historic Roswell square — with its mill ruins, its vickery creek trail , its variety of restaurants — is a fifteen-minute walk the other direction. We are, in a real sense, surrounded by things that most neighborhoods in metro Atlanta can only dream to be near.</p>
+          </div>
+          <div class="overview__image-wrap">
+            <img src="https://www.invernesshoa.org/data/siteimages/Amenities/roswell-image2.jpg" alt="The Inverness clubhouse and grounds">
+            <div class="overview__caption">The covered bridge at Vickery Mill · Roswell, Georgia</div>
+          </div>
+        </div>
+
+        <div class="overview__enclaves">
+          <div class="enclave">
+            <span class="enclave__count">Enclave I · Est. 1986</span>
+            <span class="enclave__name">Inverness</span>
+            <p class="enclave__desc">The original section, laid out along Azalea Drive. The clubhouse, pool, and tennis courts sit at its heart.</p>
+          </div>
+          <div class="enclave">
+            <span class="enclave__count">Enclave II</span>
+            <span class="enclave__name">Riverview</span>
+            <p class="enclave__desc">The lots grow larger as they approach the river bluff, with several backing directly onto the woodline of the Chattahoochee Nature Center.</p>
+          </div>
+          <div class="enclave">
+            <span class="enclave__count">Enclave III</span>
+            <span class="enclave__name">Riverbluff</span>
+            <p class="enclave__desc">The highest ground in the neighborhood, with the longest westerly views and the largest average lot size.</p>
+          </div>
+        </div>
+
+        <div class="overview__stats">
+          <div class="stat">
+            <span class="stat__num">260</span>
+            <span class="stat__label">Households</span>
+          </div>
+          <div class="stat">
+            <span class="stat__num">1986</span>
+            <span class="stat__label">Established</span>
+          </div>
+          <div class="stat">
+            <span class="stat__num">3</span>
+            <span class="stat__label">Enclaves</span>
+          </div>
+          <div class="stat">
+            <span class="stat__num">0.4<sub>mi</sub></span>
+            <span class="stat__label">To the river</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============== AMENITIES PAGE ============== -->
+  <div class="page" data-page="amenities">
+
+    <section class="amenities" data-reveal style="padding-top: 10rem;">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow"><span>The Grounds</span></div>
+          <h2>Secluded grounds, maintained for resident enjoyment.</h2>
+          <p class="lead">Secluded within our beautifully maintained grounds are the clubhouse, pool, tennis courts, and playground. Whether you're taking laps in the five‑lane pool, joining a match on one of four lit courts, or hosting friends in the clubhouse, the amenities offer a relaxed, resort‑like atmosphere for residents and their guests. All facilities are maintained by the Trust and are available from dawn until 10 p.m.</p>
+        </div>
+
+        <div class="amenities__list">
+
+          <article class="amenity">
+            <div class="amenity__media">
+              <span class="amenity__tag">I.</span>
+              <img src="https://www.invernesshoa.org/data/siteimages/Amenities/amenities-image2.jpg" alt="The Inverness clubhouse">
+            </div>
+            <div class="amenity__body">
+              <span class="amenity__index">No. 01 · The Fieldhouse</span>
+              <h3 class="amenity__title">The Clubhouse</h3>
+              <p class="amenity__desc">Located at 2072 Azalea Drive, the clubhouse was renovated in 2019 and features a spanning glass view overlooking the pool and surrounding grounds. Inside you'll find a vaulted gathering room with a welcoming fireplace, a fully equipped caterer's kitchen, and flexible seating suitable for social events and private rentals. Residents may book the clubhouse through the resident portal.</p>
+              <div class="amenity__specs">
+                <div class="amenity__spec"><span class="amenity__spec-label">Capacity</span><span class="amenity__spec-value">80 seated</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Hours</span><span class="amenity__spec-value">7a – 10p</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Renovated</span><span class="amenity__spec-value">2019</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Booking</span><span class="amenity__spec-value">Via portal</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="amenity amenity--reverse">
+            <div class="amenity__media">
+              <span class="amenity__tag">II.</span>
+              <img src="https://www.invernesshoa.org/data/siteimages/Amenities/Pool%20-%20small.jpg" alt="Swimming pool at Inverness">
+            </div>
+            <div class="amenity__body">
+              <span class="amenity__index">No. 02 · The Pool</span>
+              <h3 class="amenity__title">The Swimming Pool</h3>
+              <p class="amenity__desc">The pool offers five swim lanes plus a shallow area for children. It is typically open from Memorial Day through Labor Day, with lifeguards on duty during peak hours. The surrounding terrace accommodates lounge seating and shaded areas for relaxing between swims. The community swim team, the Inverness Stingrays, practices and competes each season.</p>
+              <div class="amenity__specs">
+                <div class="amenity__spec"><span class="amenity__spec-label">Season</span><span class="amenity__spec-value">Memorial – Labor</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Lanes</span><span class="amenity__spec-value">5</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Depth</span><span class="amenity__spec-value">3 – 9 ft</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Swim team</span><span class="amenity__spec-value">Inverness Stingrays</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="amenity">
+            <div class="amenity__media">
+              <span class="amenity__tag">III.</span>
+              <img src="https://www.invernesshoa.org/data/siteimages/Amenities/tennis-image2.jpg" alt="Tennis courts at Inverness">
+            </div>
+            <div class="amenity__body">
+              <span class="amenity__index">No. 03 · The Courts</span>
+              <h3 class="amenity__title">Tennis</h3>
+              <p class="amenity__desc">Four courts provide ample space for league play and casual matches. One court is marked for pickleball and can also accommodate informal basketball play. The courts were resurfaced in 2022 and include new fencing and a shaded viewing pergola. A regular Saturday morning doubles group plays year‑round, and courts may be reserved through the resident portal.</p>
+              <div class="amenity__specs">
+                <div class="amenity__spec"><span class="amenity__spec-label">Surface</span><span class="amenity__spec-value">Har-Tru</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Courts</span><span class="amenity__spec-value">4</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Lights</span><span class="amenity__spec-value">Until 10p</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Resurfaced</span><span class="amenity__spec-value">2022</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="amenity amenity--reverse">
+            <div class="amenity__media">
+              <span class="amenity__tag">IV.</span>
+              <img src="https://www.invernesshoa.org/data/siteimages/Amenities/playground.jpg" alt="Playground at Inverness">
+            </div>
+            <div class="amenity__body">
+              <span class="amenity__index">No. 04 · The Playground</span>
+              <h3 class="amenity__title">The Playground</h3>
+              <p class="amenity__desc">A shaded playground adjacent to the pool area, featuring a climbing structure, swings, and a small pavilion with picnic seating. The playground is intended for neighborhood use and is open from dawn until dusk; families should supervise young children while on the equipment.</p>
+              <div class="amenity__specs">
+                <div class="amenity__spec"><span class="amenity__spec-label">Ages</span><span class="amenity__spec-value">2 – 12</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Surface</span><span class="amenity__spec-value">Playground safe mulch</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Shade</span><span class="amenity__spec-value">Mature oaks</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Open</span><span class="amenity__spec-value">Dawn – dusk</span></div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============== EVENTS PAGE ============== -->
+  <div class="page" data-page="events">
+
+    <section class="events" data-reveal style="padding-top: 10rem;">
+      <div class="container">
+        <div class="events__intro" id="eventsIntro"></div>
+
+        <div class="scrapbook" id="scrapbook"></div>
+
+        <div class="seasonal">
+          <div class="seasonal__head">
+            <span>No.</span>
+            <span>Occasion</span>
+            <span class="col-detail">Notes</span>
+            <span class="col-date" style="text-align:right">Date</span>
+          </div>
+          <div id="seasonalRows"></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============== LOCATION PAGE ============== -->
+  <div class="page" data-page="location">
+
+    <section class="location" data-reveal style="padding-top: 10rem;">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow"><span>The Setting</span></div>
+          <h2>Between the river and the square.</h2>
+          <p class="lead">Inverness sits on a quiet ridge in north Roswell, with the Chattahoochee Nature Center and the riverwalk to the west and the 1839 Roswell town square to the southeast. The five points below are the ones most residents access in a normal week.</p>
+        </div>
+
+        <div class="map-wrap">
+          <div class="map-canvas" id="mapCanvas">
+            <div id="leafletMap"></div>
+          </div>
+
+          <aside class="map-legend" id="mapLegend">
+            <div class="map-legend__title">Points of interest</div>
+            <!-- Legend items are rendered from data/poi.json by js/main.js -->
+          </aside>
+        </div>
+
+        <div class="poi-details" id="poiDetails">
+          <!-- POI detail cards are rendered from data/poi.json by js/main.js -->
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+</main>
+
+<!-- ============== FOOTER ============== -->
+<footer>
+  <div class="footer__grid">
+    <div class="footer__col">
+      <div class="footer__brand-mark">Inverness</div>
+      <div class="footer__brand-sub">A Residence Trust · Est. 1986</div>
+      <p class="footer__addr">
+        2072 Azalea Drive<br>
+        Roswell, Georgia 30075<br>
+        North Fulton County
+      </p>
+    </div>
+    <div class="footer__col">
+      <div class="footer__col-title">The Trust</div>
+      <ul>
+        <li><a data-nav="home">Overview</a></li>
+        <li><a data-nav="amenities">Amenities</a></li>
+        <li><a data-nav="events">Calendar</a></li>
+        <li><a data-nav="location">Location</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <div class="footer__col-title">Residents</div>
+      <ul>
+        <li><a href="https://portal.accessmgt.com/public" target="_blank" rel="noopener noreferrer">Resident Portal</a></li>
+        <li><a href="https://reservemycourt.com/login" target="_blank" rel="noopener noreferrer">Book a Court</a></li>
+        <li><a href="https://portal.accessmgt.com/community/reservations" target="_blank" rel="noopener noreferrer">Reserve the Clubhouse</a></li>
+        <li><a href="https://portal.accessmgt.com/community/documents/" target="_blank" rel="noopener noreferrer">Dues &amp; Documents</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <div class="footer__col-title">The Setting</div>
+      <ul>
+        <li><a href="https://www.roswellgov.com" target="_blank" rel="noopener noreferrer">City of Roswell</a></li>
+        <li><a href="https://www.chattnaturecenter.org" target="_blank" rel="noopener noreferrer">Chattahoochee Nature Center</a></li>
+        <li><a href="https://www.nps.gov/chat" target="_blank" rel="noopener noreferrer">River National Recreation Area</a></li>
+        <li><a href="https://www.roswellgov.com/discover-us/rentals/historic-sites/" target="_blank" rel="noopener noreferrer">Historic Roswell</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2026 Inverness HOA · Roswell, Georgia</span>
+    <span>A quiet address on the Chattahoochee</span>
+  </div>
+</footer>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- main scripts -->
+<script src="js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+[
+  {
+    "num": "01",
+    "name": "Inverness Clubhouse",
+    "lat": 34.0067,
+    "lng": -84.3842,
+    "desc": "2072 Azalea Dr — the heart of the neighborhood.",
+    "detail": "The gathering room and point of reference for everything else.",
+    "dist": "0.0 mi",
+    "cardDesc": "2072 Azalea Drive, Roswell, GA 30075. The neighborhood's gathering room and the point of reference for everything else.",
+    "cardMeta": "0.0 mi · Origin",
+    "primary": true
+  },
+  {
+    "num": "02",
+    "name": "Chattahoochee Nature Center",
+    "lat": 34.0037,
+    "lng": -84.3826,
+    "desc": "127 acres of trails, wildlife rehab, and river access.",
+    "detail": "A unit of the Chattahoochee River National Recreation Area.",
+    "dist": "0.4 mi",
+    "cardDesc": "127 acres of forest, meadow, and rehabilitated wildlife along the river — a unit of the Chattahoochee River National Recreation Area.",
+    "cardMeta": "0.4 mi · 8 min walk"
+  },
+  {
+    "num": "03",
+    "name": "Roswell Riverwalk",
+    "lat": 34.0026,
+    "lng": -84.3722,
+    "desc": "A boardwalk trail along the Chattahoochee, paved end to end.",
+    "detail": "Runs south to the dam at Morgan Falls.",
+    "dist": "0.7 mi",
+    "cardDesc": "A paved boardwalk running south from the nature center to the dam at Morgan Falls, with fishing piers and a canoe launch.",
+    "cardMeta": "0.7 mi · 14 min walk"
+  },
+  {
+    "num": "04",
+    "name": "Roswell Town Square",
+    "lat": 34.0149,
+    "lng": -84.3633,
+    "desc": "The 1839 square, with the original bandstand.",
+    "detail": "Mill workers' cottages and Barrington Hall across the street.",
+    "dist": "1.4 mi",
+    "cardDesc": "Laid out in 1839 by Roswell King, with the original bandstand, the founding cottages, and Barrington Hall across the street.",
+    "cardMeta": "1.4 mi · 28 min walk"
+  },
+  {
+    "num": "05",
+    "name": "Downtown Roswell",
+    "lat": 34.0272,
+    "lng": -84.3615,
+    "desc": "Restaurants, shops, and galleries along Canton Street.",
+    "detail": "The monthly Alive After Five street festival, April through October.",
+    "dist": "1.6 mi",
+    "cardDesc": "Canton Street's restaurants, galleries, and the monthly Alive After Five street festival, April through October.",
+    "cardMeta": "1.6 mi · 32 min walk"
+  }
+]

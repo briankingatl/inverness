@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inverness — A peaceful life on the Chattahoochee, Roswell, Georgia</title>
+<meta name="description" content="A Homeowner's Association of 260 homes across three enclaves — Inverness, Riverview, and Riverbluff — on the Chattahoochee River in Roswell, Georgia.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Caveat:wght@400;500&display=swap">
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<style>
+/* ============== TOKENS ============== */
+:root {
+  --bg:         #EAE4D9;
+  --cream:      #F3F0EB;
+  --charcoal:   #1C1C1C;
+  --earth:      #2A2A2A;
+  --accent:     #8C7B6B;
+  --primary:    #385E7D;
+
+  --ease-quiet:    cubic-bezier(.22, 1, .36, 1);
+  --ease-precise:  cubic-bezier(.4, 0, .2, 1);
+  --ease-emphasis: cubic-bezier(.16, 1, .3, 1);
+
+  --max:  1400px;
+  --prose: 860px;
+  --bleed: 1600px;
+}
+
+/* ============== RESET ============== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body {
+  background: var(--bg);
+  color: var(--charcoal);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 300;
+  line-height: 1.65;
+  font-size: 17px;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; height: auto; }
+button, input { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; }
+
+::selection { background: var(--accent); color: var(--cream); }
+
+/* ============== TYPOGRAPHY UTILS ============== */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 0.85rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.eyebrow::after {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 800ms var(--ease-quiet) 350ms;
+}
+.is-in .eyebrow::after { width: 2.5rem; }
+
+h1, h2, h3, h4 {
+  font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  color: var(--charcoal);
+  line-height: 1.05;
+}
+
+/* ============== BUTTONS ============== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 1rem 1.6rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  border-radius: 100px;
+  transition: transform .5s var(--ease-quiet), background .4s var(--ease-quiet), color .4s var(--ease-quiet), border-color .4s var(--ease-quiet);
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.btn--primary { background: var(--charcoal); color: var(--cream); }
+.btn--primary:hover { background: var(--accent); transform: translateY(-2px); }
+.btn--ghost { background: transparent; color: var(--charcoal); border-color: rgba(28,28,28,0.28); }
+.btn--ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+.btn--ghost--light { color: var(--cream); border-color: rgba(243,240,235,0.4); }
+.btn--ghost--light:hover { border-color: var(--accent); color: var(--accent); }
+.btn .arr { display: inline-block; transition: transform .4s var(--ease-quiet); }
+.btn:hover .arr { transform: translateX(4px); }
+
+/* ============== NAV ============== */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.3rem 2.5rem;
+  background: rgba(234, 228, 217, 0.82);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid rgba(28,28,28,0.06);
+  transition: padding .4s var(--ease-quiet);
+}
+.nav.is-scrolled { padding: 0.9rem 2.5rem; }
+
+.nav__brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  gap: 4px;
+  cursor: pointer;
+}
+.nav__brand-mark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--charcoal);
+}
+.nav__brand-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.nav__links {
+  display: flex;
+  gap: 2.4rem;
+  align-items: center;
+}
+.nav__link {
+  position: relative;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 6px 0;
+  color: var(--charcoal);
+  transition: color .35s var(--ease-quiet);
+  cursor: pointer;
+}
+.nav__link::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 1px;
+  background: var(--accent);
+  transition: width .45s var(--ease-quiet);
+}
+.nav__link:hover, .nav__link.is-active { color: var(--accent); }
+.nav__link:hover::after, .nav__link.is-active::after { width: 100%; }
+
+.nav__cta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.nav__signin {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 0.7rem 1.3rem;
+  border: 1px solid var(--charcoal);
+  border-radius: 100px;
+  background: transparent;
+  color: var(--charcoal);
+  transition: all .4s var(--ease-quiet);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.nav__signin:hover {
+  background: var(--charcoal);
+  color: var(--cream);
+}
+
+.nav__mobile-toggle {
+  display: none;
+  width: 32px; height: 32px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+.nav__mobile-toggle span {
+  width: 22px; height: 1px; background: var(--charcoal);
+  transition: transform .35s var(--ease-quiet), opacity .25s var(--ease-quiet);
+}
+.nav__mobile-toggle.is-open span:nth-child(1) { transform: translateY(3px) rotate(45deg); }
+.nav__mobile-toggle.is-open span:nth-child(2) { opacity: 0; }
+.nav__mobile-toggle.is-open span:nth-child(3) { transform: translateY(-3px) rotate(-45deg); }
+
+/* ============== PAGE TRANSITIONS ============== */
+.page {
+  display: none;
+  animation: pageEnter 0.85s var(--ease-quiet) both;
+}
+.page.is-active { display: block; }
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ============== HERO ============== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 8rem 2.5rem 4rem;
+  overflow: hidden;
+}
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.hero__bg img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transform: scale(1.12);
+  opacity: 0;
+  filter: blur(12px);
+  will-change: transform, filter, opacity;
+}
+.hero.is-loaded .hero__bg img {
+  animation: kenburns 28s ease-in-out infinite alternate;
+}
+@keyframes kenburns {
+  0%   { transform: scale(1.04) translate(-0.8%, -0.6%); }
+  100% { transform: scale(1.12) translate(0.8%, 0.6%); }
+}
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(28,28,28,0.05) 0%, rgba(28,28,28,0) 28%, rgba(28,28,28,0) 60%, rgba(28,28,28,0.55) 100%),
+    linear-gradient(90deg, rgba(28,28,28,0.25) 0%, rgba(28,28,28,0) 50%);
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  max-width: var(--max);
+  margin: 0 auto;
+  width: 100%;
+  color: var(--cream);
+}
+.hero__eyebrow {
+  color: var(--cream);
+  opacity: 0.85;
+  margin-bottom: 1.8rem;
+}
+.hero__eyebrow::after { background: var(--cream); }
+
+.hero__title {
+  font-size: clamp(3rem, 7vw, 6.2rem);
+  line-height: 0.98;
+  font-weight: 500;
+  color: var(--cream);
+  max-width: 14ch;
+  letter-spacing: -0.018em;
+  margin-bottom: 2rem;
+}
+.hero__title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--cream);
+  opacity: 0.92;
+}
+
+.hero__sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.7;
+  max-width: 50ch;
+  color: rgba(243,240,235,0.85);
+  margin-bottom: 2.6rem;
+}
+
+.hero__actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hero__meta {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 2.5rem;
+  z-index: 3;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(243,240,235,0.7);
+  text-align: right;
+  line-height: 1.9;
+}
+.hero__meta-row { display: block; }
+.hero__meta-coord { color: var(--accent); margin-top: 0.4rem; }
+
+.hero__scroll {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(243,240,235,0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+.hero__scroll-line {
+  width: 1px; height: 36px;
+  background: rgba(243,240,235,0.4);
+  position: relative;
+  overflow: hidden;
+}
+.hero__scroll-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--cream);
+  transform: translateY(-100%);
+  animation: scrollLine 2.4s var(--ease-quiet) infinite;
+}
+@keyframes scrollLine {
+  0%   { transform: translateY(-100%); }
+  50%  { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+
+/* line-mask-rise */
+.line { display: block; overflow: hidden; }
+.line .inner {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 1100ms var(--ease-quiet);
+  transition-delay: calc(var(--i, 0) * 160ms + 300ms);
+}
+.is-in .line .inner { transform: translateY(0); }
+
+/* ============== SECTION SHELL ============== */
+section {
+  padding: 8rem 2.5rem;
+}
+.container {
+  max-width: var(--max);
+  margin: 0 auto;
+}
+.container--prose { max-width: var(--prose); }
+.container--bleed { max-width: var(--bleed); }
+
+.section-head {
+  margin-bottom: 4.5rem;
+}
+.section-head .eyebrow { margin-bottom: 1.5rem; }
+.section-head h2 {
+  font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+  line-height: 1.05;
+  max-width: 22ch;
+}
+.section-head .lead {
+  margin-top: 1.5rem;
+  font-size: 17px;
+  line-height: 1.7;
+  max-width: 56ch;
+  color: var(--earth);
+}
+
+/* ============== OVERVIEW / MANIFEST ============== */
+.overview {
+  background: var(--bg);
+  border-top: 1px solid rgba(28,28,28,0.06);
+}
+.overview__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+}
+.overview__text { padding-top: 1rem; }
+.overview__text p {
+  margin-bottom: 1.6rem;
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--earth);
+}
+.overview__text p:first-of-type::first-letter {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4.5rem;
+  font-weight: 500;
+  float: left;
+  line-height: 0.85;
+  margin: 0.2rem 0.8rem 0 0;
+  color: var(--accent);
+}
+.overview__image-wrap {
+  position: relative;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  border-radius: 2px;
+}
+.overview__image-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  animation: kenburns-soft 18s ease-in-out infinite alternate;
+}
+@keyframes kenburns-soft {
+  0%   { transform: scale(1.02) translate(-0.5%, -0.4%); }
+  100% { transform: scale(1.08) translate(0.5%, 0.4%); }
+}
+.overview__caption {
+  position: absolute;
+  bottom: 1.4rem;
+  left: 1.4rem;
+  right: 1.4rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: rgba(28,28,28,0.55);
+  backdrop-filter: blur(8px);
+  padding: 0.7rem 1rem;
+  border-radius: 2px;
+}
+
+.overview__enclaves {
+  margin-top: 6rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  padding-top: 4rem;
+  border-top: 1px solid rgba(28,28,28,0.1);
+}
+.enclave {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.enclave__name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--charcoal);
+  line-height: 1.1;
+}
+.enclave__count {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.enclave__desc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--earth);
+  margin-top: 0.3rem;
+}
+
+.overview__stats {
+  margin-top: 4rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  padding-top: 4rem;
+  border-top: 1px solid rgba(28,28,28,0.1);
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.stat__num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--accent);
+}
+.stat__num sub {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--earth);
+  vertical-align: baseline;
+  margin-left: 0.2rem;
+}
+.stat__label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+}
+
+/* ============== AMENITIES ============== */
+.amenities {
+  background: var(--cream);
+}
+.amenities__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.amenity {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+  padding: 5rem 0;
+  border-top: 1px solid rgba(28,28,28,0.1);
+}
+.amenity:last-child { border-bottom: 1px solid rgba(28,28,28,0.1); }
+.amenity--reverse .amenity__media { order: 2; }
+
+.amenity__media {
+  position: relative;
+  aspect-ratio: 5/4;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--bg);
+}
+.amenity__media img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s var(--ease-quiet);
+}
+.amenity:hover .amenity__media img { transform: scale(1.04); }
+
+.amenity__tag {
+  position: absolute;
+  top: 1.2rem; left: 1.2rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--cream);
+  background: rgba(28,28,28,0.6);
+  backdrop-filter: blur(6px);
+  padding: 0.35rem 0.85rem;
+  border-radius: 100px;
+}
+
+.amenity__body { padding: 0 1rem; }
+.amenity__index {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--accent);
+  margin-bottom: 0.7rem;
+  display: block;
+}
+.amenity__title {
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  line-height: 1.1;
+  margin-bottom: 1.4rem;
+  font-weight: 500;
+}
+.amenity__desc {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--earth);
+  margin-bottom: 1.8rem;
+  max-width: 38ch;
+}
+.amenity__specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem 2rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid rgba(28,28,28,0.12);
+  max-width: 40ch;
+}
+.amenity__spec {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.amenity__spec-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.amenity__spec-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  color: var(--charcoal);
+  font-weight: 500;
+}
+
+/* ============== SOCIAL / EVENTS (scrapbook) ============== */
+.events {
+  background: var(--bg);
+  position: relative;
+}
+.events__intro {
+  max-width: var(--prose);
+  margin: 0 auto 5rem;
+  text-align: center;
+}
+.events__intro .eyebrow { justify-content: center; }
+.events__intro h2 {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  margin: 1.5rem auto 1.5rem;
+  max-width: 16ch;
+}
+.events__intro p {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--earth);
+  max-width: 50ch;
+  margin: 0 auto;
+}
+
+.scrapbook {
+  position: relative;
+  perspective: 2000px;
+  min-height: 720px;
+  max-width: var(--bleed);
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.polaroid {
+  position: absolute;
+  width: 280px;
+  background: #F8F5EE;
+  padding: 14px 14px 56px;
+  box-shadow:
+    0 1px 1px rgba(0,0,0,0.04),
+    0 22px 32px -10px rgba(28,28,28,0.16),
+    0 6px 12px -4px rgba(28,28,28,0.08);
+  transition:
+    transform .65s var(--ease-emphasis),
+    box-shadow .65s var(--ease-quiet),
+    z-index 0s;
+  transform-origin: center center;
+  will-change: transform;
+  cursor: pointer;
+}
+.polaroid:hover {
+  z-index: 20;
+  transform: rotate(0deg) scale(1.06) translateY(-6px) !important;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.05),
+    0 38px 52px -10px rgba(28,28,28,0.26),
+    0 12px 22px -4px rgba(28,28,28,0.12);
+  transition-delay: 0ms;
+}
+.polaroid img {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  display: block;
+  background: var(--bg);
+}
+.polaroid__caption {
+  position: absolute;
+  bottom: 12px; left: 14px; right: 14px;
+  text-align: center;
+}
+.polaroid__title {
+  font-family: 'Caveat', cursive;
+  font-size: 18px;
+  color: var(--charcoal);
+  line-height: 1.1;
+  display: block;
+}
+.polaroid__date {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: 3px;
+  display: block;
+}
+
+/* Seasonal index table */
+.seasonal {
+  margin-top: 7rem;
+  max-width: var(--max);
+  margin-left: auto;
+  margin-right: auto;
+  background: var(--cream);
+  padding: 4rem 3rem;
+  border-radius: 2px;
+}
+.seasonal__head {
+  display: grid;
+  grid-template-columns: 60px 1fr 1fr 100px;
+  gap: 2rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid rgba(28,28,28,0.2);
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.seasonal__row {
+  display: grid;
+  grid-template-columns: 60px 1fr 1fr 100px;
+  gap: 2rem;
+  padding: 1.6rem 0;
+  border-bottom: 1px solid rgba(28,28,28,0.08);
+  align-items: baseline;
+  transition: background .4s var(--ease-quiet);
+}
+.seasonal__row:hover { background: rgba(140,123,107,0.04); }
+.seasonal__row:last-child { border-bottom: none; }
+.seasonal__num {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--accent);
+}
+.seasonal__event {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--charcoal);
+}
+.seasonal__detail {
+  font-size: 14px;
+  color: var(--earth);
+  line-height: 1.55;
+}
+.seasonal__date {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-align: right;
+}
+
+/* ============== LOCATION ============== */
+.location {
+  background: var(--cream);
+}
+.location__intro {
+  max-width: var(--prose);
+  margin-bottom: 5rem;
+}
+.location__intro p {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--earth);
+  margin-top: 1.5rem;
+}
+
+.map-wrap {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 0;
+  background: var(--bg);
+  border-radius: 2px;
+  overflow: hidden;
+  border: 1px solid rgba(28,28,28,0.08);
+}
+.map-canvas {
+  position: relative;
+  background: #E0D7C5;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+}
+#leafletMap {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Custom Leaflet Marker */
+.inverness-marker {
+  background: var(--charcoal);
+  border: 2px solid var(--cream);
+  border-radius: 50%;
+  width: 18px !important;
+  height: 18px !important;
+  margin-top: -9px !important;
+  margin-left: -9px !important;
+  box-shadow: 0 4px 10px rgba(28,28,28,0.35);
+  transition: transform .3s var(--ease-quiet), background .3s var(--ease-quiet);
+  cursor: pointer;
+}
+.inverness-marker:hover, .inverness-marker.is-active {
+  background: var(--accent);
+  transform: scale(1.15);
+}
+.inverness-marker--primary {
+  width: 28px !important;
+  height: 28px !important;
+  margin-top: -14px !important;
+  margin-left: -14px !important;
+  box-shadow: 0 6px 16px rgba(28,28,28,0.4);
+  background: var(--primary);
+}
+.inverness-marker--primary .inverness-marker__num {
+  font-size: 12px;
+}
+.inverness-marker__num {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--cream);
+}
+
+/* Leaflet Popup Customization */
+.leaflet-popup-content-wrapper {
+  background: var(--cream) !important;
+  color: var(--charcoal) !important;
+  border-radius: 2px !important;
+  box-shadow: 0 10px 30px -10px rgba(28,28,28,0.25) !important;
+  border: 1px solid rgba(28,28,28,0.08) !important;
+}
+.leaflet-popup-content {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  margin: 14px 18px !important;
+}
+.leaflet-popup-content strong {
+  display: block;
+  font-family: 'Cormorant Garamond', serif !important;
+  font-size: 18px !important;
+  font-weight: 500 !important;
+  color: var(--charcoal) !important;
+  margin-bottom: 4px !important;
+  letter-spacing: 0.01em !important;
+}
+.leaflet-popup-content em {
+  font-style: normal !important;
+  font-size: 10px !important;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase !important;
+  color: var(--accent) !important;
+  margin-bottom: 8px !important;
+  display: block !important;
+}
+.leaflet-popup-content span {
+  display: block !important;
+  font-size: 12px !important;
+  color: var(--earth) !important;
+}
+.leaflet-popup-tip {
+  background: var(--cream) !important;
+}
+.leaflet-container a.leaflet-popup-close-button {
+  color: var(--accent) !important;
+  font-size: 18px !important;
+  padding: 6px 8px 0 0 !important;
+}
+
+.map-legend {
+  background: var(--cream);
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+}
+.map-legend__title {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.8rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid rgba(28,28,28,0.12);
+}
+.legend-item {
+  padding: 1.1rem 0;
+  border-bottom: 1px solid rgba(28,28,28,0.06);
+  cursor: pointer;
+  transition: padding-left .4s var(--ease-quiet);
+}
+.legend-item:last-child { border-bottom: none; }
+.legend-item:hover, .legend-item.is-active {
+  padding-left: 0.5rem;
+}
+.legend-item__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin-bottom: 0.35rem;
+}
+.legend-item__num {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+.legend-item__name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--charcoal);
+  line-height: 1.2;
+}
+.legend-item__dist {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--earth);
+  margin-left: auto;
+  opacity: 0.7;
+}
+.legend-item__desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--earth);
+  margin-top: 0.4rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .5s var(--ease-quiet), margin .5s var(--ease-quiet);
+}
+.legend-item:hover .legend-item__desc,
+.legend-item.is-active .legend-item__desc {
+  max-height: 100px;
+  margin-top: 0.6rem;
+}
+
+/* ============== POI DETAIL CARDS ============== */
+.poi-details {
+  margin-top: 5rem;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+}
+.poi-card {
+  background: var(--bg);
+  padding: 2rem 1.6rem;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  transition: transform .5s var(--ease-quiet), background .4s var(--ease-quiet);
+}
+.poi-card:hover {
+  transform: translateY(-4px);
+  background: var(--cream);
+}
+.poi-card__num {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 2.2rem;
+  color: var(--accent);
+  line-height: 1;
+}
+.poi-card__name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1.15;
+  color: var(--charcoal);
+}
+.poi-card__meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: auto;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(28,28,28,0.1);
+}
+.poi-card__desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--earth);
+}
+
+/* ============== FOOTER ============== */
+footer {
+  background: var(--earth);
+  color: rgba(243,240,235,0.7);
+  padding: 5rem 2.5rem 2.5rem;
+}
+.footer__grid {
+  max-width: var(--max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(243,240,235,0.1);
+}
+.footer__brand-mark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--cream);
+  letter-spacing: 0.03em;
+  margin-bottom: 0.5rem;
+}
+.footer__brand-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.6rem;
+}
+.footer__addr {
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(243,240,235,0.6);
+}
+.footer__col-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-bottom: 1.2rem;
+}
+.footer__col li {
+  margin-bottom: 0.6rem;
+  font-size: 13px;
+}
+.footer__col a {
+  color: rgba(243,240,235,0.65);
+  transition: color .3s var(--ease-quiet);
+  cursor: pointer;
+}
+.footer__col a:hover { color: var(--accent); }
+.footer__bottom {
+  max-width: var(--max);
+  margin: 2rem auto 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(243,240,235,0.4);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* ============== RESPONSIVE ============== */
+@media (max-width: 1100px) {
+  .nav__links { display: none; }
+  .nav__mobile-toggle { display: flex; }
+  .nav__links.is-open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 64px; left: 0; right: 0;
+    background: var(--bg);
+    padding: 2rem;
+    gap: 1.5rem;
+    border-bottom: 1px solid rgba(28,28,28,0.1);
+  }
+  .overview__grid { grid-template-columns: 1fr; gap: 3rem; }
+  .amenity { grid-template-columns: 1fr; gap: 2.5rem; padding: 3.5rem 0; }
+  .amenity--reverse .amenity__media { order: 0; }
+  .map-wrap { grid-template-columns: 1fr; }
+  .map-canvas { aspect-ratio: 1/1; }
+  .poi-details { grid-template-columns: repeat(2, 1fr); }
+  .footer__grid { grid-template-columns: 1fr 1fr; }
+  .overview__stats { grid-template-columns: repeat(2, 1fr); }
+  .overview__enclaves { grid-template-columns: 1fr; gap: 2rem; }
+}
+@media (max-width: 720px) {
+  section { padding: 5rem 1.5rem; }
+  .nav { padding: 1rem 1.5rem; }
+  .hero { padding: 6rem 1.5rem 3rem; }
+  .hero__meta, .hero__scroll { display: none; }
+  .nav__signin { font-size: 9px; letter-spacing: 0.14em; padding: 0.55rem 0.9rem; }
+  .events { padding-top: 6rem !important; }
+  .seasonal { padding: 2.5rem 1.5rem; }
+  .seasonal__head, .seasonal__row {
+    grid-template-columns: 30px 1fr;
+    gap: 1rem;
+  }
+  .seasonal__head .col-detail,
+  .seasonal__head .col-date,
+  .seasonal__row .seasonal__detail,
+  .seasonal__row .seasonal__date { display: none; }
+  .scrapbook {
+    min-height: 0;
+    padding: 1rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    perspective: none;
+  }
+  .polaroid {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    width: 44%;
+    max-width: 200px;
+    padding: 10px 10px 44px;
+  }
+  .polaroid__title { font-size: 15px; }
+  .poi-details { grid-template-columns: 1fr; }
+  .footer__grid { grid-template-columns: 1fr; }
+  .footer__bottom { flex-direction: column; align-items: flex-start; }
+}
+
+/* ============== REDUCED MOTION ============== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .hero__bg img { animation: none; transform: scale(1.04); opacity: 1; filter: blur(0); }
+}
+
+/* ============== TOUCH ============== */
+@media (pointer: coarse) {
+  .polaroid:hover {
+    transform: rotate(0deg) scale(1.02) !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ============== NAV ============== -->
+<nav class="nav" id="nav">
+  <a class="nav__brand" id="navBrand" aria-label="Inverness — home">
+    <span class="nav__brand-mark">Inverness</span>
+    <span class="nav__brand-sub">Roswell · Georgia</span>
+  </a>
+  <ul class="nav__links" id="navLinks">
+    <li><a class="nav__link" data-nav="home">Overview</a></li>
+    <li><a class="nav__link" data-nav="amenities">Amenities</a></li>
+    <li><a class="nav__link" data-nav="events">Calendar</a></li>
+    <li><a class="nav__link" data-nav="location">Location</a></li>
+  </ul>
+  <div class="nav__cta">
+    <a class="nav__signin" href="https://portal.accessmgt.com/public" target="_blank" rel="noopener noreferrer">
+      Resident Sign-In
+    </a>
+    <button class="nav__mobile-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<main id="app">
+
+  <!-- ============== HOME PAGE ============== -->
+  <div class="page is-active" data-page="home">
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero__bg">
+        <img src="https://www.invernesshoa.org/data/siteimages/Background/background.jpg" alt="Inverness neighborhood in Roswell, Georgia">
+      </div>
+      <div class="hero__overlay"></div>
+      <div class="hero__content">
+        <div class="eyebrow hero__eyebrow"><span>Est. 1986 · North Fulton County</span></div>
+        <h1 class="hero__title">
+          <span class="line"><span class="inner">A peaceful</span></span>
+          <span class="line"><span class="inner">life on the <em>Chattahoochee,</em></span></span>
+          <span class="line"><span class="inner">near historic Roswell.</span></span>
+        </h1>
+        <p class="hero__sub">
+          Two hundred and sixty homes across three enclaves — Inverness, Riverview, and Riverbluff — set among dogwood, oak, and pine, with the river bending wide just south of us and the old mill square a short walk east.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" data-nav="amenities">Explore the grounds <span class="arr">→</span></a>
+          <a class="btn btn--ghost btn--ghost--light" data-nav="location">See the location</a>
+        </div>
+      </div>
+      <div class="hero__meta">
+        <span class="hero__meta-row">34° 00′ 67″ N</span>
+        <span class="hero__meta-row">-84° 38′ 42″ W</span>
+        <span class="hero__meta-row hero__meta-coord">Elevation 1,050 ft</span>
+      </div>
+      <div class="hero__scroll">
+        <span>Scroll</span>
+        <span class="hero__scroll-line"></span>
+      </div>
+    </section>
+
+    <!-- OVERVIEW / MANIFEST -->
+    <section class="overview" data-reveal>
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow"><span>The Quarter Notes</span></div>
+          <h2>An unhurried stretch of north Atlanta, kept that way on purpose.</h2>
+          <p class="lead">Inverness was established in 1986 along a quiet ridge above the Chattahoochee, the river bending wide just south of us. The neighborhood has matured into one of Roswell's most established addresses — known less for grandeur than for character and beauty.</p>
+        </div>
+
+        <div class="overview__grid">
+          <div class="overview__text">
+            <p>The streets here are named for what grows along them — Azalea, Camellia, Wisteria, Dogwood — and the original plantings have had nearly forty years to do their work. In April the canopy is so thick over Azalea Drive that the afternoon arrives in a green half-light, and the clubhouse seems to float in it.</p>
+            <p>Inverness is in fact three enclaves under one trust: the original Inverness section, laid out in 1986; Riverview, where the lots grow larger as they approach the river bluff; and Riverbluff, the newest of the three, with the highest ground and the longest views. Two hundred and sixty homes in all, with covenants written to keep the streetscape consistent without erasing the personality of any one house.</p>
+            <p>What sets Inverness apart is less what is inside it than what is beside it. The Chattahoochee Nature Center is our next-door neight; the river itself is a ten-minute walk through the wood; and the historic Roswell square — with its mill ruins, its vickery creek trail , its variety of restaurants — is a fifteen-minute walk the other direction. We are, in a real sense, surrounded by things that most neighborhoods in metro Atlanta can only dream to be near.</p>
+          </div>
+          <div class="overview__image-wrap">
+            <img src="https://www.invernesshoa.org/data/siteimages/Amenities/roswell-image2.jpg" alt="The Inverness clubhouse and grounds">
+            <div class="overview__caption">The covered bridge at Vickery Mill · Roswell, Georgia</div>
+          </div>
+        </div>
+
+        <div class="overview__enclaves">
+          <div class="enclave">
+            <span class="enclave__count">Enclave I · Est. 1986</span>
+            <span class="enclave__name">Inverness</span>
+            <p class="enclave__desc">The original section, laid out along Azalea Drive. The clubhouse, pool, and tennis courts sit at its heart.</p>
+          </div>
+          <div class="enclave">
+            <span class="enclave__count">Enclave II</span>
+            <span class="enclave__name">Riverview</span>
+            <p class="enclave__desc">The lots grow larger as they approach the river bluff, with several backing directly onto the woodline of the Chattahoochee Nature Center.</p>
+          </div>
+          <div class="enclave">
+            <span class="enclave__count">Enclave III</span>
+            <span class="enclave__name">Riverbluff</span>
+            <p class="enclave__desc">The highest ground in the neighborhood, with the longest westerly views and the largest average lot size.</p>
+          </div>
+        </div>
+
+        <div class="overview__stats">
+          <div class="stat">
+            <span class="stat__num">260</span>
+            <span class="stat__label">Households</span>
+          </div>
+          <div class="stat">
+            <span class="stat__num">1986</span>
+            <span class="stat__label">Established</span>
+          </div>
+          <div class="stat">
+            <span class="stat__num">3</span>
+            <span class="stat__label">Enclaves</span>
+          </div>
+          <div class="stat">
+            <span class="stat__num">0.4<sub>mi</sub></span>
+            <span class="stat__label">To the river</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============== AMENITIES PAGE ============== -->
+  <div class="page" data-page="amenities">
+
+    <section class="amenities" data-reveal style="padding-top: 10rem;">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow"><span>The Grounds</span></div>
+          <h2>Secluded grounds, maintained for resident enjoyment.</h2>
+          <p class="lead">Secluded within our beautifully maintained grounds are the clubhouse, pool, tennis courts, and playground. Whether you're taking laps in the five‑lane pool, joining a match on one of four lit courts, or hosting friends in the clubhouse, the amenities offer a relaxed, resort‑like atmosphere for residents and their guests. All facilities are maintained by the Trust and are available from dawn until 10 p.m.</p>
+        </div>
+
+        <div class="amenities__list">
+
+          <article class="amenity">
+            <div class="amenity__media">
+              <span class="amenity__tag">I.</span>
+              <img src="https://www.invernesshoa.org/data/siteimages/Amenities/amenities-image2.jpg" alt="The Inverness clubhouse">
+            </div>
+            <div class="amenity__body">
+              <span class="amenity__index">No. 01 · The Fieldhouse</span>
+              <h3 class="amenity__title">The Clubhouse</h3>
+              <p class="amenity__desc">Located at 2072 Azalea Drive, the clubhouse was renovated in 2019 and features a spanning glass view overlooking the pool and surrounding grounds. Inside you'll find a vaulted gathering room with a welcoming fireplace, a fully equipped caterer's kitchen, and flexible seating suitable for social events and private rentals. Residents may book the clubhouse through the resident portal.</p>
+              <div class="amenity__specs">
+                <div class="amenity__spec"><span class="amenity__spec-label">Capacity</span><span class="amenity__spec-value">80 seated</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Hours</span><span class="amenity__spec-value">7a – 10p</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Renovated</span><span class="amenity__spec-value">2019</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Booking</span><span class="amenity__spec-value">Via portal</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="amenity amenity--reverse">
+            <div class="amenity__media">
+              <span class="amenity__tag">II.</span>
+              <img src="https://www.invernesshoa.org/data/siteimages/Amenities/Pool%20-%20small.jpg" alt="Swimming pool at Inverness">
+            </div>
+            <div class="amenity__body">
+              <span class="amenity__index">No. 02 · The Pool</span>
+              <h3 class="amenity__title">The Swimming Pool</h3>
+              <p class="amenity__desc">The pool offers five swim lanes plus a shallow area for children. It is typically open from Memorial Day through Labor Day, with lifeguards on duty during peak hours. The surrounding terrace accommodates lounge seating and shaded areas for relaxing between swims. The community swim team, the Inverness Stingrays, practices and competes each season.</p>
+              <div class="amenity__specs">
+                <div class="amenity__spec"><span class="amenity__spec-label">Season</span><span class="amenity__spec-value">Memorial – Labor</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Lanes</span><span class="amenity__spec-value">5</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Depth</span><span class="amenity__spec-value">3 – 9 ft</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Swim team</span><span class="amenity__spec-value">Inverness Stingrays</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="amenity">
+            <div class="amenity__media">
+              <span class="amenity__tag">III.</span>
+              <img src="https://www.invernesshoa.org/data/siteimages/Amenities/tennis-image2.jpg" alt="Tennis courts at Inverness">
+            </div>
+            <div class="amenity__body">
+              <span class="amenity__index">No. 03 · The Courts</span>
+              <h3 class="amenity__title">Tennis</h3>
+              <p class="amenity__desc">Four courts provide ample space for league play and casual matches. One court is marked for pickleball and can also accommodate informal basketball play. The courts were resurfaced in 2022 and include new fencing and a shaded viewing pergola. A regular Saturday morning doubles group plays year‑round, and courts may be reserved through the resident portal.</p>
+              <div class="amenity__specs">
+                <div class="amenity__spec"><span class="amenity__spec-label">Surface</span><span class="amenity__spec-value">Har-Tru</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Courts</span><span class="amenity__spec-value">4</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Lights</span><span class="amenity__spec-value">Until 10p</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Resurfaced</span><span class="amenity__spec-value">2022</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="amenity amenity--reverse">
+            <div class="amenity__media">
+              <span class="amenity__tag">IV.</span>
+              <img src="https://www.invernesshoa.org/data/siteimages/Amenities/playground.jpg" alt="Playground at Inverness">
+            </div>
+            <div class="amenity__body">
+              <span class="amenity__index">No. 04 · The Playground</span>
+              <h3 class="amenity__title">The Playground</h3>
+              <p class="amenity__desc">A shaded playground adjacent to the pool area, featuring a climbing structure, swings, and a small pavilion with picnic seating. The playground is intended for neighborhood use and is open from dawn until dusk; families should supervise young children while on the equipment.</p>
+              <div class="amenity__specs">
+                <div class="amenity__spec"><span class="amenity__spec-label">Ages</span><span class="amenity__spec-value">2 – 12</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Surface</span><span class="amenity__spec-value">Playground safe mulch</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Shade</span><span class="amenity__spec-value">Mature oaks</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Open</span><span class="amenity__spec-value">Dawn – dusk</span></div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============== EVENTS PAGE ============== -->
+  <div class="page" data-page="events">
+
+    <section class="events" data-reveal style="padding-top: 10rem;">
+      <div class="container">
+        <div class="events__intro" id="eventsIntro"></div>
+
+        <div class="scrapbook" id="scrapbook"></div>
+
+        <div class="seasonal">
+          <div class="seasonal__head">
+            <span>No.</span>
+            <span>Occasion</span>
+            <span class="col-detail">Notes</span>
+            <span class="col-date" style="text-align:right">Date</span>
+          </div>
+          <div id="seasonalRows"></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============== LOCATION PAGE ============== -->
+  <div class="page" data-page="location">
+
+    <section class="location" data-reveal style="padding-top: 10rem;">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow"><span>The Setting</span></div>
+          <h2>Between the river and the square.</h2>
+          <p class="lead">Inverness sits on a quiet ridge in north Roswell, with the Chattahoochee Nature Center and the riverwalk to the west and the 1839 Roswell town square to the southeast. The five points below are the ones most residents access in a normal week.</p>
+        </div>
+
+        <div class="map-wrap">
+          <div class="map-canvas" id="mapCanvas">
+            <div id="leafletMap"></div>
+          </div>
+
+          <aside class="map-legend" id="mapLegend">
+            <div class="map-legend__title">Points of interest</div>
+            <div class="legend-item is-active" data-poi="0">
+              <div class="legend-item__head">
+                <span class="legend-item__num">01</span>
+                <span class="legend-item__name">Inverness Clubhouse</span>
+                <span class="legend-item__dist">0.0 mi</span>
+              </div>
+              <p class="legend-item__desc">2072 Azalea Dr — the heart of the neighborhood.</p>
+            </div>
+            <div class="legend-item" data-poi="1">
+              <div class="legend-item__head">
+                <span class="legend-item__num">02</span>
+                <span class="legend-item__name">Chattahoochee Nature Center</span>
+                <span class="legend-item__dist">0.4 mi</span>
+              </div>
+              <p class="legend-item__desc">127 acres of trails, wildlife rehab, and river access.</p>
+            </div>
+            <div class="legend-item" data-poi="2">
+              <div class="legend-item__head">
+                <span class="legend-item__num">03</span>
+                <span class="legend-item__name">Roswell Riverwalk</span>
+                <span class="legend-item__dist">0.7 mi</span>
+              </div>
+              <p class="legend-item__desc">A boardwalk trail along the Chattahoochee, paved end to end.</p>
+            </div>
+            <div class="legend-item" data-poi="3">
+              <div class="legend-item__head">
+                <span class="legend-item__num">04</span>
+                <span class="legend-item__name">Roswell Town Square</span>
+                <span class="legend-item__dist">1.4 mi</span>
+              </div>
+              <p class="legend-item__desc">The 1839 square, with the original bandstand and mill workers' cottages.</p>
+            </div>
+            <div class="legend-item" data-poi="4">
+              <div class="legend-item__head">
+                <span class="legend-item__num">05</span>
+                <span class="legend-item__name">Downtown Roswell</span>
+                <span class="legend-item__dist">1.6 mi</span>
+              </div>
+              <p class="legend-item__desc">Restaurants, shops, and galleries along Canton Street.</p>
+            </div>
+          </aside>
+        </div>
+
+        <div class="poi-details">
+          <div class="poi-card">
+            <span class="poi-card__num">01</span>
+            <span class="poi-card__name">Inverness Clubhouse</span>
+            <p class="poi-card__desc">2072 Azalea Drive, Roswell, GA 30075. The neighborhood's gathering room and the point of reference for everything else.</p>
+            <span class="poi-card__meta">0.0 mi · Origin</span>
+          </div>
+          <div class="poi-card">
+            <span class="poi-card__num">02</span>
+            <span class="poi-card__name">Chattahoochee Nature Center</span>
+            <p class="poi-card__desc">127 acres of forest, meadow, and rehabilitated wildlife along the river — a unit of the Chattahoochee River National Recreation Area.</p>
+            <span class="poi-card__meta">0.4 mi · 8 min walk</span>
+          </div>
+          <div class="poi-card">
+            <span class="poi-card__num">03</span>
+            <span class="poi-card__name">Roswell Riverwalk</span>
+            <p class="poi-card__desc">A paved boardwalk running south from the nature center to the dam at Morgan Falls, with fishing piers and a canoe launch.</p>
+            <span class="poi-card__meta">0.7 mi · 14 min walk</span>
+          </div>
+          <div class="poi-card">
+            <span class="poi-card__num">04</span>
+            <span class="poi-card__name">Roswell Town Square</span>
+            <p class="poi-card__desc">Laid out in 1839 by Roswell King, with the original bandstand, the founding cottages, and Barrington Hall across the street.</p>
+            <span class="poi-card__meta">1.4 mi · 28 min walk</span>
+          </div>
+          <div class="poi-card">
+            <span class="poi-card__num">05</span>
+            <span class="poi-card__name">Downtown Roswell</span>
+            <p class="poi-card__desc">Canton Street's restaurants, galleries, and the monthly Alive After Five street festival, April through October.</p>
+            <span class="poi-card__meta">1.6 mi · 32 min walk</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+</main>
+
+<!-- ============== FOOTER ============== -->
+<footer>
+  <div class="footer__grid">
+    <div class="footer__col">
+      <div class="footer__brand-mark">Inverness</div>
+      <div class="footer__brand-sub">A Residence Trust · Est. 1986</div>
+      <p class="footer__addr">
+        2072 Azalea Drive<br>
+        Roswell, Georgia 30075<br>
+        North Fulton County
+      </p>
+    </div>
+    <div class="footer__col">
+      <div class="footer__col-title">The Trust</div>
+      <ul>
+        <li><a data-nav="home">Overview</a></li>
+        <li><a data-nav="amenities">Amenities</a></li>
+        <li><a data-nav="events">Calendar</a></li>
+        <li><a data-nav="location">Location</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <div class="footer__col-title">Residents</div>
+      <ul>
+        <li><a href="https://portal.accessmgt.com/public" target="_blank" rel="noopener noreferrer">Resident Portal</a></li>
+        <li><a href="https://reservemycourt.com/login" target="_blank" rel="noopener noreferrer">Book a Court</a></li>
+        <li><a href="https://portal.accessmgt.com/community/reservations" target="_blank" rel="noopener noreferrer">Reserve the Clubhouse</a></li>
+        <li><a href="https://portal.accessmgt.com/community/documents/" target="_blank" rel="noopener noreferrer">Dues &amp; Documents</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <div class="footer__col-title">The Setting</div>
+      <ul>
+        <li><a href="https://www.roswellgov.com" target="_blank" rel="noopener noreferrer">City of Roswell</a></li>
+        <li><a href="https://www.chattnaturecenter.org" target="_blank" rel="noopener noreferrer">Chattahoochee Nature Center</a></li>
+        <li><a href="https://www.nps.gov/chat" target="_blank" rel="noopener noreferrer">River National Recreation Area</a></li>
+        <li><a href="https://www.roswellgov.com/discover-us/rentals/historic-sites/" target="_blank" rel="noopener noreferrer">Historic Roswell</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2026 Inverness HOA · Roswell, Georgia</span>
+    <span>A quiet address on the Chattahoochee</span>
+  </div>
+</footer>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+/* ============== UTIL ============== */
+const $  = (s, ctx = document) => ctx.querySelector(s);
+const $$ = (s, ctx = document) => Array.from(ctx.querySelectorAll(s));
+
+/* ============== PAGE ROUTER ============== */
+const router = {
+  current: null,
+  pages: $$('.page'),
+
+  go(page, push = true) {
+    if (!page || page === this.current) return;
+    this.pages.forEach(p => p.classList.toggle('is-active', p.dataset.page === page));
+    $$('.nav__link').forEach(l => l.classList.toggle('is-active', l.dataset.nav === page));
+    this.current = page;
+    window.scrollTo({ top: 0, behavior: 'instant' });
+
+    requestAnimationFrame(() => {
+      $$('[data-reveal]').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight) el.classList.add('is-in');
+      });
+      if (page === 'events') initScrapbook();
+      if (page === 'location') {
+        setTimeout(() => {
+          if (map) {
+            map.invalidateSize();
+          }
+        }, 200);
+      }
+    });
+
+    if (push) history.pushState({ page }, '', `#${page}`);
+  }
+};
+
+/* ============== NAV CLICKS ============== */
+// Brand scrolls to top / goes home (no data-nav)
+$('#navBrand').addEventListener('click', e => {
+  e.preventDefault();
+  router.go('home');
+  $('#navLinks').classList.remove('is-open');
+  $('#navToggle').classList.remove('is-open');
+});
+
+// All data-nav clicks (nav links, hero buttons, footer links)
+document.addEventListener('click', e => {
+  const navEl = e.target.closest('[data-nav]');
+  if (!navEl) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const target = navEl.dataset.nav;
+  router.go(target);
+  $('#navLinks').classList.remove('is-open');
+  $('#navToggle').classList.remove('is-open');
+});
+
+// Browser back/forward
+window.addEventListener('popstate', e => {
+  const page = (e.state && e.state.page) || (location.hash || '#home').slice(1) || 'home';
+  router.go(page, false);
+});
+
+// Initial route
+const initialHash = (location.hash || '#home').replace('#', '') || 'home';
+router.go(initialHash, false);
+
+/* ============== NAV SCROLL STATE ============== */
+const nav = $('#nav');
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    requestAnimationFrame(() => {
+      nav.classList.toggle('is-scrolled', window.scrollY > 40);
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
+
+/* ============== MOBILE NAV ============== */
+const navToggle = $('#navToggle');
+const navLinks  = $('#navLinks');
+navToggle.addEventListener('click', e => {
+  e.stopPropagation();
+  navLinks.classList.toggle('is-open');
+  navToggle.classList.toggle('is-open');
+});
+
+/* ============== HERO ENTRANCE ============== */
+window.addEventListener('load', () => {
+  const hero = $('.hero');
+  requestAnimationFrame(() => {
+    hero.classList.add('is-loaded');
+    const img = $('.hero__bg img');
+    img.style.transition = 'opacity 1.8s cubic-bezier(.22,1,.36,1), filter 1.8s cubic-bezier(.22,1,.36,1), transform 1.8s cubic-bezier(.22,1,.36,1)';
+    img.style.opacity = '1';
+    img.style.filter = 'blur(0px)';
+    img.style.transform = 'scale(1.04)';
+    setTimeout(() => { img.style.transition = ''; }, 1900);
+  });
+  setTimeout(() => hero.classList.add('is-in'), 250);
+});
+
+// Set --i on hero lines
+$$('.hero__title .inner').forEach((el, i) => el.style.setProperty('--i', i));
+
+/* ============== REVEAL OBSERVER ============== */
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-in');
+      revealObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
+
+$$('[data-reveal]').forEach(el => revealObs.observe(el));
+
+// Set --i on any line-mask groups inside reveals
+$$('[data-reveal]').forEach(group => {
+  $$('.line .inner', group).forEach((el, i) => el.style.setProperty('--i', i));
+});
+
+/* ============== SOCIAL / EVENTS DATA ============== */
+const eventsPageData = {
+  intro: {
+    eyebrow: 'The Calendar',
+    title: 'Community gatherings with a neighborly spirit.',
+    text: 'Our Social Committee puts together a full season of neighborhood happenings — something for kids, parents, and anyone who enjoys good company. We kick things off with the Memorial Day Pool Party (think DJ, live music, and a long, lazy lunch), keep summer mellow with dive‑in movie nights, and stitch the year together with back‑to‑school socials, a Fall Festival, Halloween Costumes & Cocktails, and a cozy Breakfast with Santa. Watch the community messaging group for invites and sign‑ups.'
+  },
+  scrapbook: [
+    {
+      title: 'Easter Egg Hunt',
+      date: 'Easter',
+      image: 'https://www.invernesshoa.org/data/siteimages/Amenities/Social/social-tn1.jpg',
+      alt: 'Easter Celebration',
+      top: '4%',
+      left: '6%',
+      rotation: '-9'
+    },
+    {
+      title: 'Memorial Day Party',
+      date: 'Memorial Day Weekend',
+      image: 'https://www.invernesshoa.org/data/siteimages/Amenities/Social/bkg-social1.jpg',
+      alt: 'Memorial Day party',
+      top: '2%',
+      left: '30%',
+      rotation: '5'
+    },
+    {
+      title: 'Halloween Costumes & Cocktails',
+      date: 'Halloween',
+      image: 'https://www.invernesshoa.org/data/siteimages/Amenities/Social/social-tn4.jpg',
+      alt: 'Halloween costumes and cocktails',
+      top: '8%',
+      left: '65%',
+      rotation: '-6'
+    },
+    {
+      title: 'Fall Festival',
+      date: 'October',
+      image: 'https://www.invernesshoa.org/data/siteimages/Amenities/Social/social-tn2.jpg',
+      alt: 'Fall Festival',
+      top: '36%',
+      left: '12%',
+      rotation: '11'
+    },
+    {
+      title: 'Kentucky Derby Party',
+      date: 'First Saturday in May',
+      image: 'https://www.invernesshoa.org/data/siteimages/Amenities/Social/The%20Hosts.jpg',
+      alt: 'The hosts',
+      top: '32%',
+      left: '38%',
+      rotation: '-3'
+    },
+    {
+      title: 'Breakfast with Santa',
+      date: 'Christmastime',
+      image: 'https://www.invernesshoa.org/data/siteimages/Amenities/Social/social-tn3.jpg',
+      alt: 'Breakfast with Santa',
+      top: '55%',
+      left: '62%',
+      rotation: '7'
+    }
+  ],
+  seasonal: [
+    {
+      num: 'i.',
+      event: 'Easter Egg Hunt',
+      detail: 'Pancakes, coffee, and hundreds of hidden eggs — the kids run the show while neighbors trade stories over morning coffee.',
+      date: 'Easter'
+    },
+    {
+      num: 'ii.',
+      event: 'Memorial Day Party',
+      detail: 'Our biggest bash — poolside music, a DJ or band, catered food, and plenty of cold drinks to welcome summer (and the Stingrays\' season).',
+      date: 'Memorial Day Weekend'
+    },
+    {
+      num: 'iii.',
+      event: 'Dive‑in Movie Nights',
+      detail: 'Float in the pool or lounge on the terrace — popcorn and a big screen under the stars.',
+      date: 'Summer Evenings'
+    },
+    {
+      num: 'iv.',
+      event: 'Back‑to‑School Social',
+      detail: 'A low‑key neighborhood mixer to mark the new school year — families welcome.',
+      date: 'Late August'
+    },
+    {
+      num: 'v.',
+      event: 'Fall Festival',
+      detail: 'Pumpkins, crafts, and seasonal treats — an autumn afternoon of neighborhood fun.',
+      date: 'October'
+    },
+    {
+      num: 'vi.',
+      event: 'Halloween Costumes & Cocktails',
+      detail: 'An adults\' night with themed drinks and spirited costumes — a grown‑ups take on Halloween.',
+      date: 'Halloween'
+    },
+    {
+      num: 'vii.',
+      event: 'Christmas Breakfast with Santa',
+      detail: 'Donuts, hot cocoa, crafts, and a visit from Santa — a cozy morning the kids remember.',
+      date: 'Early December'
+    }
+  ]
+};
+
+function renderEventsPage() {
+  const intro = $('#eventsIntro');
+  const scrapbook = $('#scrapbook');
+  const seasonalRows = $('#seasonalRows');
+
+  if (!intro || !scrapbook || !seasonalRows) return;
+
+  intro.innerHTML = `
+    <div class="eyebrow"><span>${eventsPageData.intro.eyebrow}</span></div>
+    <h2>${eventsPageData.intro.title}</h2>
+    <p>${eventsPageData.intro.text}</p>
+  `;
+
+  scrapbook.innerHTML = eventsPageData.scrapbook.map(item => `
+    <div class="polaroid" style="top: ${item.top}; left: ${item.left};" data-rotation="${item.rotation}">
+      <img src="${item.image}" alt="${item.alt}">
+      <div class="polaroid__caption">
+        <span class="polaroid__title">${item.title}</span>
+        <span class="polaroid__date">${item.date}</span>
+      </div>
+    </div>
+  `).join('');
+
+  seasonalRows.innerHTML = eventsPageData.seasonal.map(item => `
+    <div class="seasonal__row">
+      <span class="seasonal__num">${item.num}</span>
+      <span class="seasonal__event">${item.event}</span>
+      <span class="seasonal__detail">${item.detail}</span>
+      <span class="seasonal__date">${item.date}</span>
+    </div>
+  `).join('');
+}
+
+function initScrapbook() {
+  const polaroids = $$('.polaroid');
+  polaroids.forEach((p, i) => {
+    const r = parseFloat(p.dataset.rotation) || (Math.random() - 0.5) * 24;
+    p.style.transform = `rotate(${r}deg)`;
+    p.style.opacity = '0';
+    p.style.transition = 'transform .65s cubic-bezier(.16,1,.3,1), box-shadow .65s cubic-bezier(.22,1,.36,1), z-index 0s, opacity .8s cubic-bezier(.22,1,.36,1)';
+    setTimeout(() => { p.style.opacity = '1'; }, 80 * i + 200);
+  });
+}
+
+renderEventsPage();
+initScrapbook();
+
+/* ============== LEAFLET MAP ============== */
+let map = null;
+let markers = [];
+
+const poiData = [
+  {
+    num: '01',
+    name: 'Inverness Clubhouse',
+    lat: 34.0067,
+    lng: -84.3842,
+    desc: '2072 Azalea Dr — the heart of the neighborhood.',
+    detail: 'The gathering room and point of reference for everything else.',
+    primary: true
+  },
+  {
+    num: '02',
+    name: 'Chattahoochee Nature Center',
+    lat: 34.0037,
+    lng: -84.3826,
+    desc: '127 acres of trails, wildlife rehab, and river access.',
+    detail: 'A unit of the Chattahoochee River National Recreation Area.'
+  },
+  {
+    num: '03',
+    name: 'Roswell Riverwalk',
+    lat: 34.0026,
+    lng: -84.3722,
+    desc: 'A boardwalk trail along the Chattahoochee, paved end to end.',
+    detail: 'Runs south to the dam at Morgan Falls.'
+  },
+  {
+    num: '04',
+    name: 'Roswell Town Square',
+    lat: 34.0149,
+    lng: -84.3633,
+    desc: 'The 1839 square, with the original bandstand.',
+    detail: 'Mill workers\' cottages and Barrington Hall across the street.'
+  },
+  {
+    num: '05',
+    name: 'Downtown Roswell',
+    lat: 34.0272,
+    lng: -84.3615,
+    desc: 'Restaurants, shops, and galleries along Canton Street.',
+    detail: 'The monthly Alive After Five street festival, April through October.'
+  }
+];
+
+function initMap() {
+  if (map) return; // Already initialized
+
+  map = L.map('leafletMap', {
+    scrollWheelZoom: false,
+    zoomControl: true,
+    attributionControl: true
+  }).setView([34.0150, -84.3750], 14);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  // Custom marker icon
+  const customIcon = L.divIcon({
+    className: 'inverness-marker-wrapper',
+    html: function() {
+      // We'll set inner HTML per-marker
+      return '';
+    },
+    iconSize: [18, 18],
+    iconAnchor: [9, 9]
+  });
+
+  poiData.forEach((poi, i) => {
+    const primaryClass = poi.primary ? ' inverness-marker--primary' : '';
+    const iconSize = poi.primary ? 28 : 18;
+    const iconAnchor = iconSize / 2;
+    const icon = L.divIcon({
+      className: '',
+      html: `<div class="inverness-marker${primaryClass}" data-poi="${i}"><span class="inverness-marker__num">${i + 1}</span></div>`,
+      iconSize: [iconSize, iconSize],
+      iconAnchor: [iconAnchor, iconAnchor]
+    });
+
+    const marker = L.marker([poi.lat, poi.lng], { icon: icon }).addTo(map);
+    marker.bindPopup(`
+      <strong>${poi.name}</strong>
+      <em>No. ${poi.num}</em>
+      <span>${poi.desc}</span>
+      <span>${poi.detail}</span>
+    `);
+
+    marker.on('click', () => {
+      highlightPoi(i);
+    });
+
+    markers.push(marker);
+  });
+
+  // Disable scroll-wheel zoom by default (better for page flow)
+  // Enable on click, disable on mouseout
+  map.on('click', () => {
+    map.scrollWheelZoom.enable();
+  });
+  map.on('mouseout', () => {
+    map.scrollWheelZoom.disable();
+  });
+}
+
+function highlightPoi(idx) {
+  const legendItems = $$('.legend-item');
+  legendItems.forEach((l, i) => l.classList.toggle('is-active', i === idx));
+
+  // Highlight marker
+  const markerEls = document.querySelectorAll('.inverness-marker');
+  markerEls.forEach((m, i) => m.classList.toggle('is-active', i === idx));
+
+  // Fly to marker and open popup
+  if (map && markers[idx]) {
+    map.flyTo([poiData[idx].lat, poiData[idx].lng], 15, {
+      duration: 0.8,
+      easeLinearity: 0.25
+    });
+    setTimeout(() => {
+      markers[idx].openPopup();
+    }, 400);
+  }
+}
+
+// Initialize map when location page is first visited
+const mapCanvas = $('#mapCanvas');
+const mapObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      if (!map) {
+        initMap();
+      } else {
+        // Ensure map renders correctly if it was hidden
+        setTimeout(() => map.invalidateSize(), 100);
+      }
+      mapObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+mapObs.observe(mapCanvas);
+
+// Legend item interactions
+const legends = $$('.legend-item');
+legends.forEach((l, i) => {
+  l.addEventListener('mouseenter', () => highlightPoi(i));
+  l.addEventListener('click', () => highlightPoi(i));
+});
+
+/* ============== PAUSE KEN BURNS OFF-SCREEN ============== */
+const kenObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    e.target.style.animationPlayState = e.isIntersecting ? 'running' : 'paused';
+  });
+});
+$$('.hero__bg img, .overview__image-wrap img').forEach(img => kenObs.observe(img));
+
+</script>
+
+</body>
+</html>
