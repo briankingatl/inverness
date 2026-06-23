@@ -279,12 +279,12 @@ async function initMap() {
     markers.push(marker);
   });
 
-  // Disable scroll-wheel zoom by default (better for page flow)
-  // Enable on click, disable on mouseout
-  map.on('click', () => {
+  // Enable scroll-wheel zoom when hovering over the map, disable when leaving
+  const mapElement = document.getElementById('leafletMap');
+  mapElement.addEventListener('mouseenter', () => {
     map.scrollWheelZoom.enable();
   });
-  map.on('mouseout', () => {
+  mapElement.addEventListener('mouseleave', () => {
     map.scrollWheelZoom.disable();
   });
 }

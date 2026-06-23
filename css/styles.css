@@ -1116,6 +1116,7 @@ footer {
   section { padding: 5rem 1.5rem; }
   .nav { padding: 1rem 1.5rem; }
   .hero { padding: 6rem 1.5rem 3rem; }
+  .map-canvas { aspect-ratio: 1/1; min-height: 350px; }
   .hero__meta, .hero__scroll { display: none; }
   .nav__signin { font-size: 9px; letter-spacing: 0.14em; padding: 0.55rem 0.9rem; }
   .events { padding-top: 6rem !important; }

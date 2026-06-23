@@ -2,7 +2,7 @@
   "intro": {
     "eyebrow": "The Calendar",
     "title": "Community gatherings with a neighborly spirit.",
-    "text": "Our Social Committee puts together a full season of neighborhood happenings — something for kids, parents, and anyone who enjoys good company. We kick things off with the Memorial Day Pool Party (think DJ, live music, and a long, lazy lunch), keep summer mellow with dive‑in movie nights, and stitch the year together with back‑to‑school socials, a Fall Festival, Halloween Costumes & Cocktails, and a cozy Breakfast with Santa. Watch the community messaging group for invites and sign‑ups."
+    "text": "Our Social Committee organizes a full season of neighborhood events for kids, parents, and anyone who enjoys good company. We kick things off with the Memorial Day Pool Party, featuring a DJ, live music, and a long, lazy lunch. Summer stays mellow with dive-in movie nights, and we stitch the year together with back-to-school socials, a Fall Festival, Halloween Costumes & Cocktails, and a cozy Breakfast with Santa. Watch the community messaging group for invites and sign-ups."
   },
   "scrapbook": [
     {
@@ -64,43 +64,43 @@
     {
       "num": "i.",
       "event": "Easter Egg Hunt",
-      "detail": "Pancakes, coffee, and hundreds of hidden eggs — the kids run the show while neighbors trade stories over morning coffee.",
+      "detail": "Pancakes, coffee, and hundreds of hidden eggs. The kids run the show while neighbors trade stories over morning coffee.",
       "date": "Easter"
     },
     {
       "num": "ii.",
       "event": "Memorial Day Party",
-      "detail": "Our biggest bash — poolside music, a DJ or band, catered food, and plenty of cold drinks to welcome summer (and the Stingrays' season).",
+      "detail": "Our biggest party of the year. Expect poolside music, a DJ or band, catered food, and plenty of cold drinks to welcome summer and the Stingrays' season.",
       "date": "Memorial Day Weekend"
     },
     {
       "num": "iii.",
-      "event": "Dive‑in Movie Nights",
-      "detail": "Float in the pool or lounge on the terrace — popcorn and a big screen under the stars.",
+      "event": "Dive-in Movie Nights",
+      "detail": "Float in the pool or lounge on the terrace while enjoying popcorn and a big screen under the stars.",
       "date": "Summer Evenings"
     },
     {
       "num": "iv.",
-      "event": "Back‑to‑School Social",
-      "detail": "A low‑key neighborhood mixer to mark the new school year — families welcome.",
+      "event": "Back-to-School Social",
+      "detail": "A low-key neighborhood mixer to mark the start of the new school year. All families are welcome.",
       "date": "Late August"
     },
     {
       "num": "v.",
       "event": "Fall Festival",
-      "detail": "Pumpkins, crafts, and seasonal treats — an autumn afternoon of neighborhood fun.",
+      "detail": "Pumpkins, crafts, and seasonal treats make for a fun autumn afternoon with the neighborhood.",
       "date": "October"
     },
     {
       "num": "vi.",
       "event": "Halloween Costumes & Cocktails",
-      "detail": "An adults' night with themed drinks and spirited costumes — a grown‑ups take on Halloween.",
+      "detail": "An evening for adults with themed drinks and spirited costumes, offering a grown-up take on Halloween.",
       "date": "Halloween"
     },
     {
       "num": "vii.",
       "event": "Christmas Breakfast with Santa",
-      "detail": "Donuts, hot cocoa, crafts, and a visit from Santa — a cozy morning the kids remember.",
+      "detail": "Donuts, hot cocoa, crafts, and a visit from Santa bring the kids together for a cozy morning they will remember.",
       "date": "Early December"
     }
   ]
