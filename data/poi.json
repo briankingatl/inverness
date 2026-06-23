@@ -20,18 +20,18 @@
     "detail": "A unit of the Chattahoochee River National Recreation Area.",
     "dist": "0.4 mi",
     "cardDesc": "127 acres of forest, meadow, and rehabilitated wildlife along the river — a unit of the Chattahoochee River National Recreation Area.",
-    "cardMeta": "0.4 mi · 8 min walk"
+"cardMeta": "0.4 mi · 8 min walk · 3 min bike"
   },
   {
     "num": "03",
-    "name": "Roswell Riverwalk",
+    "name": "Roswell Riverwalk Boardwalk and Trail",
     "lat": 34.0026,
     "lng": -84.3722,
-    "desc": "A boardwalk trail along the Chattahoochee, paved end to end.",
-    "detail": "Runs south to the dam at Morgan Falls.",
+    "desc": "A scenic boardwalk and 10+ miles of paved multi-use trail along the Chattahoochee.",
+    "detail": "Begins at the dam at Morgan Falls Park, follows the river, and extends eastward to connect with the Vickery Creek Trail and beyond.",
     "dist": "0.7 mi",
-    "cardDesc": "A paved boardwalk running south from the nature center to the dam at Morgan Falls, with fishing piers and a canoe launch.",
-    "cardMeta": "0.7 mi · 14 min walk"
+    "cardDesc": "A scenic boardwalk and paved riverside trail beginning at Morgan Falls Park dam, winding alongside the Chattahoochee, and extending 3+ miles eastward past the Vickery Creek Trail all the way to East Roswell — perfect for walking, running, and cycling.",
+    "cardMeta": "0.7 mi · 14 min walk · 5 min bike"
   },
   {
     "num": "04",
@@ -42,7 +42,7 @@
     "detail": "Mill workers' cottages and Barrington Hall across the street.",
     "dist": "1.4 mi",
     "cardDesc": "Laid out in 1839 by Roswell King, with the original bandstand, the founding cottages, and Barrington Hall across the street.",
-    "cardMeta": "1.4 mi · 28 min walk"
+"cardMeta": "1.4 mi · 28 min walk · 7 min bike"
   },
   {
     "num": "05",
@@ -53,6 +53,50 @@
     "detail": "The monthly Alive After Five street festival, April through October.",
     "dist": "1.6 mi",
     "cardDesc": "Canton Street's restaurants, galleries, and the monthly Alive After Five street festival, April through October.",
-    "cardMeta": "1.6 mi · 32 min walk"
+    "cardMeta": "1.6 mi · 32 min walk · 8 min bike"
+  },
+  {
+    "num": "06",
+    "name": "Azalea Park",
+    "lat": 34.0015,
+    "lng": -84.3668,
+    "desc": "A wooded playground and picnic area directly on the Chattahoochee River.",
+    "detail": "Shaded picnic tables, natural playground, and riverfront trails for a peaceful escape.",
+    "dist": "1.1 mi",
+    "cardDesc": "A shaded, riverfront playground and picnic area with natural wooded trails along the Chattahoochee — a peaceful spot for families and nature lovers.",
+    "cardMeta": "1.1 mi · 22 min walk · 6 min bike"
+  },
+  {
+    "num": "07",
+    "name": "Azalea Boat Launch",
+    "lat": 34.0021,
+    "lng": -84.3631,
+    "desc": "River access for kayaks, canoes, and fishing along the Chattahoochee.",
+    "detail": "A popular put-in and take-out spot for paddlers exploring the National Recreation Area.",
+    "dist": "1.3 mi",
+    "cardDesc": "A concrete boat launch and parking area for kayaks, canoes, and fishing — a popular access point for paddling the Chattahoochee River National Recreation Area.",
+    "cardMeta": "1.3 mi · 26 min walk · 7 min bike"
+  },
+  {
+    "num": "08",
+    "name": "Riverside Park",
+    "lat": 34.0063,
+    "lng": -84.3468,
+    "desc": "A sprawling park with playgrounds, spraygrounds, and an amphitheater.",
+    "detail": "Hosts summer concerts, movie nights, and community festivals for the whole family.",
+    "dist": "2.1 mi",
+    "cardDesc": "A sprawling riverfront park with a massive playground, spraygrounds, and an outdoor amphitheater — home to summer concerts, movie nights, and community festivals.",
+    "cardMeta": "2.1 mi · 42 min walk · 10 min bike"
+  },
+  {
+    "num": "09",
+    "name": "Riverside Recreation Area",
+    "lat": 34.0107,
+    "lng": -84.3377,
+    "desc": "Outdoor volleyball courts and fitness trails along the river.",
+    "detail": "Open-air courts and exercise stations with scenic Chattahoochee River views.",
+    "dist": "2.7 mi",
+    "cardDesc": "Open-air volleyball courts and outdoor fitness stations set along the riverbank — a scenic spot for active recreation with Chattahoochee River views.",
+    "cardMeta": "2.7 mi · 54 min walk · 13 min bike"
   }
 ]
