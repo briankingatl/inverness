@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inverness Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<!-- ============== LOGIN SCREEN ============== -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="login-brand">
+      <span class="login-brand-mark">Inverness</span>
+      <span class="login-brand-sub">Admin Panel</span>
+    </div>
+    <form id="loginForm" class="login-form">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" autocomplete="username" required autofocus>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" autocomplete="current-password" required>
+      </div>
+      <div id="loginError" class="login-error"></div>
+      <button type="submit" class="btn btn--primary btn--block">Sign In</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============== ADMIN DASHBOARD ============== -->
+<div id="adminDashboard" class="admin-dashboard" style="display:none;">
+
+  <!-- Top bar -->
+  <header class="admin-topbar">
+    <div class="admin-topbar-brand">
+      <span class="admin-topbar-mark">Inverness</span>
+      <span class="admin-topbar-sub">Content Manager</span>
+    </div>
+    <nav class="admin-tabs">
+      <button class="admin-tab is-active" data-tab="events">Events</button>
+      <button class="admin-tab" data-tab="poi">Points of Interest</button>
+      <button class="admin-tab" data-tab="images">Images</button>
+    </nav>
+    <div class="admin-topbar-actions">
+      <span id="saveStatus" class="save-status"></span>
+      <button id="logoutBtn" class="btn btn--ghost">Sign Out</button>
+    </div>
+  </header>
+
+  <main class="admin-main">
+
+    <!-- ── EVENTS TAB ── -->
+    <section id="tabEvents" class="admin-tab-content is-active">
+
+      <!-- Intro section -->
+      <div class="admin-card">
+        <h2 class="admin-card-title">Events Page Intro</h2>
+        <div class="form-group">
+          <label for="eventsEyebrow">Eyebrow</label>
+          <input type="text" id="eventsEyebrow">
+        </div>
+        <div class="form-group">
+          <label for="eventsTitle">Title</label>
+          <input type="text" id="eventsTitle">
+        </div>
+        <div class="form-group">
+          <label for="eventsText">Description</label>
+          <textarea id="eventsText" rows="6"></textarea>
+        </div>
+      </div>
+
+      <!-- Scrapbook photos -->
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h2 class="admin-card-title">Scrapbook Photos</h2>
+          <button class="btn btn--secondary" id="addScrapbookBtn">+ Add Photo</button>
+        </div>
+        <div id="scrapbookList" class="item-list"></div>
+      </div>
+
+      <!-- Seasonal events -->
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h2 class="admin-card-title">Seasonal Events</h2>
+          <button class="btn btn--secondary" id="addSeasonalBtn">+ Add Event</button>
+        </div>
+        <div id="seasonalList" class="item-list"></div>
+      </div>
+
+      <div class="admin-actions">
+        <button class="btn btn--primary" id="saveEventsBtn">Save Events</button>
+        <button class="btn btn--ghost" id="resetEventsBtn">Reset</button>
+      </div>
+    </section>
+
+    <!-- ── POI TAB ── -->
+    <section id="tabPoi" class="admin-tab-content">
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h2 class="admin-card-title">Points of Interest</h2>
+          <button class="btn btn--secondary" id="addPoiBtn">+ Add POI</button>
+        </div>
+        <div id="poiList" class="item-list"></div>
+      </div>
+      <div class="admin-actions">
+        <button class="btn btn--primary" id="savePoiBtn">Save POI</button>
+        <button class="btn btn--ghost" id="resetPoiBtn">Reset</button>
+      </div>
+    </section>
+
+    <!-- ── IMAGES TAB ── -->
+    <section id="tabImages" class="admin-tab-content">
+      <div class="admin-card">
+        <h2 class="admin-card-title">Upload Images</h2>
+        <p class="admin-card-desc">Upload images to the <code>/images</code> folder. Uploaded images will be available at <code>/images/filename.ext</code> and can be referenced in Events and POI content.</p>
+        <div id="uploadZone" class="upload-zone">
+          <div class="upload-zone-inner">
+            <span class="upload-icon">📁</span>
+            <span class="upload-text">Drop images here or click to browse</span>
+            <span class="upload-hint">JPG, PNG, GIF, WebP, SVG &mdash; max 10 MB</span>
+          </div>
+          <input type="file" id="fileInput" class="file-input" accept="image/*" multiple>
+        </div>
+        <div id="uploadProgress" class="upload-progress" style="display:none;">
+          <div class="upload-bar"><div class="upload-bar-fill" id="uploadBarFill"></div></div>
+          <span id="uploadLabel"></span>
+        </div>
+        <div id="uploadResults" class="upload-results"></div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h2 class="admin-card-title">Uploaded Images</h2>
+          <span class="admin-card-count" id="imageCount"></span>
+        </div>
+        <div id="imagesList" class="images-grid"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>
