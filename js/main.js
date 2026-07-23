@@ -11,13 +11,13 @@ const data = {
 /* Promises that resolve when each dataset has loaded. */
 const dataReady = {
   events: fetch('data/events.json')
-    .then(r => r.json())
-    .then(d => { data.events = d; })
-    .catch(err => console.error('Failed to load events.json', err)),
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .catch(err => { console.warn('events.json fetch failed, using inline data', err); return inlineJSON('eventsData'); })
+    .then(d => { data.events = d; }),
   poi: fetch('data/poi.json')
-    .then(r => r.json())
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .catch(err => { console.warn('poi.json fetch failed, using inline data', err); return inlineJSON('poiData'); })
     .then(d => { data.poi = d; })
-    .catch(err => console.error('Failed to load poi.json', err))
 };
 
 /* ============== PAGE ROUTER ============== */
@@ -30,6 +30,13 @@ const router = {
     this.pages.forEach(p => p.classList.toggle('is-active', p.dataset.page === page));
     $$('.nav__link').forEach(l => l.classList.toggle('is-active', l.dataset.nav === page));
     this.current = page;
+    const titles = {
+      home:      'Inverness | A peaceful life on the Chattahoochee, Roswell, Georgia',
+      amenities: 'Amenities | Inverness HOA, Roswell, Georgia',
+      events:    'Social | Inverness HOA, Roswell, Georgia',
+      location:  'Location | Inverness HOA, Roswell, Georgia'
+    };
+    if (titles[page]) document.title = titles[page];
     window.scrollTo({ top: 0, behavior: 'instant' });
 
     requestAnimationFrame(() => {
@@ -58,6 +65,7 @@ $('#navBrand').addEventListener('click', e => {
   router.go('home');
   $('#navLinks').classList.remove('is-open');
   $('#navToggle').classList.remove('is-open');
+  $('#navToggle').setAttribute('aria-expanded', 'false');
 });
 
 // All data-nav clicks (nav links, hero buttons, footer links)
@@ -70,6 +78,7 @@ document.addEventListener('click', e => {
   router.go(target);
   $('#navLinks').classList.remove('is-open');
   $('#navToggle').classList.remove('is-open');
+  $('#navToggle').setAttribute('aria-expanded', 'false');
 });
 
 // Browser back/forward
@@ -100,8 +109,9 @@ const navToggle = $('#navToggle');
 const navLinks  = $('#navLinks');
 navToggle.addEventListener('click', e => {
   e.stopPropagation();
-  navLinks.classList.toggle('is-open');
-  navToggle.classList.toggle('is-open');
+  const open = navLinks.classList.toggle('is-open');
+  navToggle.classList.toggle('is-open', open);
+  navToggle.setAttribute('aria-expanded', String(open));
 });
 
 /* ============== HERO ENTRANCE ============== */
@@ -127,12 +137,32 @@ const revealObs = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('is-in');
+      if (entry.target.querySelector('.count')) animateCounts(entry.target);
       revealObs.unobserve(entry.target);
     }
   });
 }, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
 
 $$('[data-reveal]').forEach(el => revealObs.observe(el));
+
+/* ============== ANIMATED COUNT-UP ============== */
+function animateCounts(scope) {
+  $$('.count', scope).forEach(el => {
+    const target = parseFloat(el.dataset.countTo);
+    const decimals = parseInt(el.dataset.decimals || '0', 10);
+    const duration = 1400;
+    const start = performance.now();
+
+    function tick(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = (target * eased).toFixed(decimals);
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = target.toFixed(decimals);
+    }
+    requestAnimationFrame(tick);
+  });
+}
 
 // Set --i on any line-mask groups inside reveals
 $$('[data-reveal]').forEach(group => {
@@ -155,8 +185,8 @@ function renderEventsPage() {
   `;
 
   scrapbook.innerHTML = e.scrapbook.map(item => `
-    <div class="polaroid" style="top: ${item.top}; left: ${item.left};" data-rotation="${item.rotation}">
-      <img src="${item.image}" alt="${item.alt}">
+    <div class="polaroid" style="top: ${item.top}; left: ${item.left};" data-rotation="${item.rotation}" data-title="${item.title}" data-date="${item.date}">
+      <img loading="lazy" decoding="async" src="${item.image}" alt="${item.alt}">
       <div class="polaroid__caption">
         <span class="polaroid__title">${item.title}</span>
         <span class="polaroid__date">${item.date}</span>
@@ -182,7 +212,33 @@ function initScrapbook() {
     p.style.opacity = '0';
     p.style.transition = 'transform .65s cubic-bezier(.16,1,.3,1), box-shadow .65s cubic-bezier(.22,1,.36,1), z-index 0s, opacity .8s cubic-bezier(.22,1,.36,1)';
     setTimeout(() => { p.style.opacity = '1'; }, 80 * i + 200);
+
+    p.addEventListener('click', () => {
+      const img = p.querySelector('img');
+      openLightbox(img.src, p.dataset.title, p.dataset.date);
+    });
   });
+}
+
+/* ============== LIGHTBOX ============== */
+const lightbox = $('#lightbox');
+function openLightbox(src, title, date) {
+  if (!lightbox) return;
+  $('#lightboxImg').src = src;
+  $('#lightboxTitle').textContent = title || '';
+  $('#lightboxDate').textContent = date || '';
+  lightbox.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  if (!lightbox) return;
+  lightbox.classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+if (lightbox) {
+  $('#lightboxClose').addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+  window.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 }
 
 /* Render the events page as soon as its data is available, then
@@ -332,6 +388,63 @@ mapObs.observe(mapCanvas);
 
 /* Render legend + POI cards once the POI data is available. */
 dataReady.poi.then(renderPoiContent);
+
+/* ============== RIVER WATCH (live USGS gauge) ============== */
+async function initRiverWatch() {
+  const widget = $('#riverWatch');
+  const updated = $('#riverWatchUpdated');
+  const dot = $('#riverWatchDot');
+  if (!widget) return;
+
+  const USGS_SITE = '02335450'; // Chattahoochee River above Roswell, GA
+  const url = `https://waterservices.usgs.gov/nwis/iv/?sites=${USGS_SITE}&parameterCd=00060,00065,00010&format=json`;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(res.status);
+    const json = await res.json();
+    const series = json.value.timeSeries;
+    if (!series || !series.length) throw new Error('no data');
+
+    const readings = {};
+    series.forEach(ts => {
+      const code = ts.variable.variableCode[0].value;
+      const val = ts.values[0].value[0];
+      if (!val) return;
+      readings[code] = { value: parseFloat(val.value), dateTime: val.dateTime };
+    });
+
+    const flowEl = widget.querySelector('[data-field="flow"]');
+    const heightEl = widget.querySelector('[data-field="height"]');
+    const tempEl = widget.querySelector('[data-field="temp"]');
+
+    if (readings['00060'] && flowEl) flowEl.textContent = Math.round(readings['00060'].value).toLocaleString();
+    if (readings['00065'] && heightEl) heightEl.textContent = readings['00065'].value.toFixed(2);
+    if (readings['00010'] && tempEl) tempEl.textContent = Math.round(readings['00010'].value * 9 / 5 + 32);
+
+    const latest = Object.values(readings).map(r => new Date(r.dateTime)).sort((a, b) => b - a)[0];
+    if (latest) {
+      updated.textContent = `Updated ${latest.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
+      dot.classList.add('is-live');
+    }
+  } catch (err) {
+    console.warn('River Watch: USGS fetch failed', err);
+    updated.textContent = 'Live gauge unavailable — try again shortly';
+  }
+}
+
+const riverWatchEl = $('#riverWatch');
+if (riverWatchEl) {
+  const riverObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        initRiverWatch();
+        riverObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  riverObs.observe(riverWatchEl);
+}
 
 /* ============== PAUSE KEN BURNS OFF-SCREEN ============== */
 const kenObs = new IntersectionObserver(entries => {

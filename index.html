@@ -6,6 +6,22 @@
 <title>Inverness | A peaceful life on the Chattahoochee, Roswell, Georgia</title>
 <meta name="description" content="A Homeowners Association of 260 homes across three enclaves, Inverness, Riverview, and Riverbluff, on the Chattahoochee River in Roswell, Georgia.">
 
+<!-- Favicon (inline SVG monogram) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%232A2A2A'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' fill='%23EAE4D9' text-anchor='middle'%3EI%3C/text%3E%3C/svg%3E">
+
+<!-- Social sharing -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Inverness | A peaceful life on the Chattahoochee">
+<meta property="og:description" content="260 homes across three enclaves on the Chattahoochee River in Roswell, Georgia. Established 1986.">
+<meta property="og:image" content="https://www.invernesshoa.org/data/siteimages/Background/background.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Inverness | A peaceful life on the Chattahoochee">
+<meta name="twitter:description" content="260 homes across three enclaves on the Chattahoochee River in Roswell, Georgia. Established 1986.">
+<meta name="twitter:image" content="https://www.invernesshoa.org/data/siteimages/Background/background.jpg">
+
+<!-- Preload hero image -->
+<link rel="preload" as="image" href="https://www.invernesshoa.org/data/siteimages/Background/background.jpg">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Caveat:wght@400;500&display=swap">
@@ -21,21 +37,21 @@
 
 <!-- ============== NAV ============== -->
 <nav class="nav" id="nav">
-<a class="nav__brand" id="navBrand" aria-label="Inverness home">
+<a class="nav__brand" id="navBrand" href="#home" aria-label="Inverness home">
     <span class="nav__brand-mark">Inverness</span>
     <span class="nav__brand-sub">Roswell · Georgia</span>
   </a>
   <ul class="nav__links" id="navLinks">
-    <li><a class="nav__link" data-nav="home">Overview</a></li>
-    <li><a class="nav__link" data-nav="amenities">Amenities</a></li>
-    <li><a class="nav__link" data-nav="events">Social</a></li>
-    <li><a class="nav__link" data-nav="location">Location</a></li>
+    <li><a class="nav__link" href="#home" data-nav="home">Overview</a></li>
+    <li><a class="nav__link" href="#amenities" data-nav="amenities">Amenities</a></li>
+    <li><a class="nav__link" href="#events" data-nav="events">Social</a></li>
+    <li><a class="nav__link" href="#location" data-nav="location">Location</a></li>
   </ul>
   <div class="nav__cta">
     <a class="nav__signin" href="https://portal.accessmgt.com/public" target="_blank" rel="noopener noreferrer">
       Resident Sign-In
     </a>
-    <button class="nav__mobile-toggle" id="navToggle" aria-label="Menu">
+    <button class="nav__mobile-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -63,14 +79,14 @@
           Two hundred and sixty homes across three enclaves, Inverness, Riverview, and Riverbluff, set among dogwood, oak, and pine. The river bends wide just south of us, and the old mill square lies a short walk east.
         </p>
         <div class="hero__actions">
-          <a class="btn btn--primary" data-nav="amenities">Explore the grounds <span class="arr">→</span></a>
-          <a class="btn btn--ghost btn--ghost--light" data-nav="location">See the location</a>
+          <a class="btn btn--primary" href="#amenities" data-nav="amenities">Explore the grounds <span class="arr">→</span></a>
+          <a class="btn btn--ghost btn--ghost--light" href="#location" data-nav="location">See the location</a>
         </div>
       </div>
       <div class="hero__meta">
-        <span class="hero__meta-row">34° 00′ 67″ N</span>
-        <span class="hero__meta-row">-84° 38′ 42″ W</span>
-        <span class="hero__meta-row hero__meta-coord">Elevation 1,050 ft</span>
+        <span class="hero__meta-row">34° 00′ 27.4″ N</span>
+        <span class="hero__meta-row">84° 23′ 5.5″ W</span>
+        <span class="hero__meta-row hero__meta-coord">Elevation 1053 ft</span>
       </div>
       <div class="hero__scroll">
         <span>Scroll</span>
@@ -82,7 +98,7 @@
     <section class="overview" data-reveal>
       <div class="container">
         <div class="section-head">
-          <div class="eyebrow"><span>The Quarter Notes</span></div>
+          <div class="eyebrow"><span>The Neighborhood</span></div>
           <h2>An unhurried stretch of north Atlanta, kept that way on purpose.</h2>
           <p class="lead">Inverness was established in 1986 along a quiet ridge above the Chattahoochee, with the river bending wide just south of us. The neighborhood has matured into one of Roswell's most established addresses, known less for grandeur than for character and beauty.</p>
         </div>
@@ -94,7 +110,7 @@
             <p>What sets Inverness apart is less what is inside it than what is beside it. The Chattahoochee Nature Center is our next-door neighbor, and the river itself is a ten-minute walk through the woods. The historic Roswell square, with its mill ruins, Vickery Creek Trail, and variety of restaurants, is a fifteen-minute walk in the other direction. In a real sense, we are surrounded by the kind of amenities most neighborhoods in metro Atlanta can only dream of.</p>
           </div>
           <div class="overview__image-wrap">
-            <img src="https://www.invernesshoa.org/data/siteimages/Amenities/roswell-image2.jpg" alt="The Inverness clubhouse and grounds">
+            <img loading="lazy" decoding="async" src="https://www.invernesshoa.org/data/siteimages/Amenities/roswell-image2.jpg" alt="The Inverness clubhouse and grounds">
             <div class="overview__caption">The covered bridge at Vickery Mill · Roswell, Georgia</div>
           </div>
         </div>
@@ -119,19 +135,19 @@
 
         <div class="overview__stats">
           <div class="stat">
-            <span class="stat__num">260</span>
+            <span class="stat__num"><span class="count" data-count-to="260">0</span></span>
             <span class="stat__label">Households</span>
           </div>
           <div class="stat">
-            <span class="stat__num">1986</span>
+            <span class="stat__num"><span class="count" data-count-to="1986">0</span></span>
             <span class="stat__label">Established</span>
           </div>
           <div class="stat">
-            <span class="stat__num">3</span>
+            <span class="stat__num"><span class="count" data-count-to="3">0</span></span>
             <span class="stat__label">Enclaves</span>
           </div>
           <div class="stat">
-            <span class="stat__num">0.4<sub>mi</sub></span>
+            <span class="stat__num"><span class="count" data-count-to="0.4" data-decimals="1">0.0</span><sub>mi</sub></span>
             <span class="stat__label">To the river</span>
           </div>
         </div>
@@ -143,7 +159,7 @@
   <!-- ============== AMENITIES PAGE ============== -->
   <div class="page" data-page="amenities">
 
-    <section class="amenities" data-reveal style="padding-top: 10rem;">
+    <section class="amenities page-top" data-reveal>
       <div class="container">
         <div class="section-head">
           <div class="eyebrow"><span>The Grounds</span></div>
@@ -155,11 +171,11 @@
 
           <article class="amenity">
             <div class="amenity__media">
-              <span class="amenity__tag">I.</span>
-              <img src="https://www.invernesshoa.org/data/siteimages/Amenities/amenities-image2.jpg" alt="The Inverness clubhouse">
+
+              <img loading="lazy" decoding="async" src="https://www.invernesshoa.org/data/siteimages/Amenities/amenities-image2.jpg" alt="The Inverness clubhouse">
             </div>
             <div class="amenity__body">
-              <span class="amenity__index">No. 01 · The Fieldhouse</span>
+              <span class="amenity__index">No. 01 · The Clubhouse</span>
               <h3 class="amenity__title">The Clubhouse</h3>
               <p class="amenity__desc">Located at 2072 Azalea Drive, the clubhouse was renovated in 2019 and features a spanning glass view overlooking the pool and surrounding grounds. Inside you'll find a vaulted gathering room with a welcoming fireplace, a fully equipped caterer's kitchen, and flexible seating suitable for social events and private rentals. Residents may book the clubhouse through the resident portal.</p>
               <div class="amenity__specs">
@@ -173,8 +189,8 @@
 
           <article class="amenity amenity--reverse">
             <div class="amenity__media">
-              <span class="amenity__tag">II.</span>
-              <img src="https://www.invernesshoa.org/data/siteimages/Amenities/Pool%20-%20small.jpg" alt="Swimming pool at Inverness">
+
+              <img loading="lazy" decoding="async" src="https://www.invernesshoa.org/data/siteimages/Amenities/Pool%20-%20small.jpg" alt="Swimming pool at Inverness">
             </div>
             <div class="amenity__body">
               <span class="amenity__index">No. 02 · The Pool</span>
@@ -191,8 +207,8 @@
 
           <article class="amenity">
             <div class="amenity__media">
-              <span class="amenity__tag">III.</span>
-              <img src="https://www.invernesshoa.org/data/siteimages/Amenities/tennis-image2.jpg" alt="Tennis courts at Inverness">
+
+              <img loading="lazy" decoding="async" src="https://www.invernesshoa.org/data/siteimages/Amenities/tennis-image2.jpg" alt="Tennis courts at Inverness">
             </div>
             <div class="amenity__body">
               <span class="amenity__index">No. 03 · The Courts</span>
@@ -209,8 +225,8 @@
 
           <article class="amenity amenity--reverse">
             <div class="amenity__media">
-              <span class="amenity__tag">IV.</span>
-              <img src="https://www.invernesshoa.org/data/siteimages/Amenities/playground.jpg" alt="Playground at Inverness">
+
+              <img loading="lazy" decoding="async" src="https://www.invernesshoa.org/data/siteimages/Amenities/playground.jpg" alt="Playground at Inverness">
             </div>
             <div class="amenity__body">
               <span class="amenity__index">No. 04 · The Playground</span>
@@ -218,7 +234,7 @@
               <p class="amenity__desc">A shaded playground adjacent to the pool area, featuring a climbing structure, swings, and a small pavilion with picnic seating. The playground is intended for neighborhood use and is open from dawn until dusk; families should supervise young children while on the equipment.</p>
               <div class="amenity__specs">
                 <div class="amenity__spec"><span class="amenity__spec-label">Ages</span><span class="amenity__spec-value">2 – 12</span></div>
-                <div class="amenity__spec"><span class="amenity__spec-label">Surface</span><span class="amenity__spec-value">Playground safe mulch</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Surface</span><span class="amenity__spec-value">Engineered mulch</span></div>
                 <div class="amenity__spec"><span class="amenity__spec-label">Shade</span><span class="amenity__spec-value">Mature oaks</span></div>
                 <div class="amenity__spec"><span class="amenity__spec-label">Open</span><span class="amenity__spec-value">Dawn – dusk</span></div>
               </div>
@@ -234,7 +250,7 @@
   <!-- ============== EVENTS PAGE ============== -->
   <div class="page" data-page="events">
 
-    <section class="events" data-reveal style="padding-top: 10rem;">
+    <section class="events page-top" data-reveal>
       <div class="container">
         <div class="events__intro" id="eventsIntro"></div>
 
@@ -257,12 +273,38 @@
   <!-- ============== LOCATION PAGE ============== -->
   <div class="page" data-page="location">
 
-    <section class="location" data-reveal style="padding-top: 10rem;">
+    <section class="location page-top" data-reveal>
       <div class="container">
         <div class="section-head">
           <div class="eyebrow"><span>The Setting</span></div>
           <h2>Between the river and the square.</h2>
-          <p class="lead">Inverness sits on a quiet ridge in south Roswell, with the Chattahoochee Nature Center and the riverwalk to the south and the 1839 Roswell town square to the northeast. The five points below are the ones most residents access in a normal week.</p>
+          <p class="lead">Inverness sits on a quiet ridge in south Roswell, with the Chattahoochee Nature Center and the riverwalk to the south and the 1839 Roswell town square to the northeast. The points below are the ones most residents access in a normal week.</p>
+        </div>
+
+        <div class="river-watch" id="riverWatch">
+          <div class="river-watch__label">
+            <span class="river-watch__dot" id="riverWatchDot"></span>
+            <span>River Watch</span>
+            <span class="river-watch__sub">Live from the USGS gauge near Roswell</span>
+          </div>
+          <div class="river-watch__stats" id="riverWatchStats">
+            <div class="river-watch__stat">
+              <span class="river-watch__num" data-field="flow">—</span>
+              <span class="river-watch__unit">cfs</span>
+              <span class="river-watch__sublabel">Streamflow</span>
+            </div>
+            <div class="river-watch__stat">
+              <span class="river-watch__num" data-field="height">—</span>
+              <span class="river-watch__unit">ft</span>
+              <span class="river-watch__sublabel">Gage height</span>
+            </div>
+            <div class="river-watch__stat">
+              <span class="river-watch__num" data-field="temp">—</span>
+              <span class="river-watch__unit">°F</span>
+              <span class="river-watch__sublabel">Water temp</span>
+            </div>
+          </div>
+          <span class="river-watch__updated" id="riverWatchUpdated">Connecting to gauge…</span>
         </div>
 
         <div class="map-wrap">
@@ -286,6 +328,18 @@
 
 </main>
 
+<!-- ============== LIGHTBOX (scrapbook photos) ============== -->
+<div class="lightbox" id="lightbox">
+  <figure class="lightbox__figure">
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
+    <img id="lightboxImg" src="" alt="">
+    <figcaption class="lightbox__caption">
+      <span class="lightbox__title" id="lightboxTitle"></span>
+      <span class="lightbox__date" id="lightboxDate"></span>
+    </figcaption>
+  </figure>
+</div>
+
 <!-- ============== FOOTER ============== -->
 <footer>
   <div class="footer__grid">
@@ -301,10 +355,10 @@
     <div class="footer__col">
       <div class="footer__col-title">The Trust</div>
       <ul>
-        <li><a data-nav="home">Overview</a></li>
-        <li><a data-nav="amenities">Amenities</a></li>
-        <li><a data-nav="events">Social</a></li>
-        <li><a data-nav="location">Location</a></li>
+        <li><a href="#home" data-nav="home">Overview</a></li>
+        <li><a href="#amenities" data-nav="amenities">Amenities</a></li>
+        <li><a href="#events" data-nav="events">Social</a></li>
+        <li><a href="#location" data-nav="location">Location</a></li>
       </ul>
     </div>
     <div class="footer__col">
