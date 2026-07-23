@@ -214,21 +214,43 @@ function initScrapbook() {
     setTimeout(() => { p.style.opacity = '1'; }, 80 * i + 200);
 
     p.addEventListener('click', () => {
-      const img = p.querySelector('img');
-      openLightbox(img.src, p.dataset.title, p.dataset.date);
+      const item = data.events.scrapbook[i];
+      const gallery = (item.images && item.images.length) ? item.images : [item.image];
+      openLightbox(gallery, gallery.indexOf(item.image), item.title, item.date);
     });
   });
 }
 
 /* ============== LIGHTBOX ============== */
 const lightbox = $('#lightbox');
-function openLightbox(src, title, date) {
+let lightboxGallery = [];
+let lightboxIndex = 0;
+let lightboxTitle = '';
+let lightboxDate = '';
+
+function openLightbox(gallery, startIndex, title, date) {
   if (!lightbox) return;
-  $('#lightboxImg').src = src;
-  $('#lightboxTitle').textContent = title || '';
-  $('#lightboxDate').textContent = date || '';
+  lightboxGallery = gallery;
+  lightboxIndex = startIndex > -1 ? startIndex : 0;
+  lightboxTitle = title || '';
+  lightboxDate = date || '';
+  renderLightboxImage();
   lightbox.classList.add('is-open');
   document.body.style.overflow = 'hidden';
+}
+function renderLightboxImage() {
+  const multi = lightboxGallery.length > 1;
+  $('#lightboxImg').src = lightboxGallery[lightboxIndex];
+  $('#lightboxTitle').textContent = lightboxTitle;
+  $('#lightboxDate').textContent = lightboxDate;
+  $('#lightboxCounter').textContent = multi ? `${lightboxIndex + 1} / ${lightboxGallery.length}` : '';
+  $('#lightboxPrev').hidden = !multi;
+  $('#lightboxNext').hidden = !multi;
+}
+function stepLightbox(delta) {
+  if (lightboxGallery.length < 2) return;
+  lightboxIndex = (lightboxIndex + delta + lightboxGallery.length) % lightboxGallery.length;
+  renderLightboxImage();
 }
 function closeLightbox() {
   if (!lightbox) return;
@@ -237,8 +259,15 @@ function closeLightbox() {
 }
 if (lightbox) {
   $('#lightboxClose').addEventListener('click', closeLightbox);
+  $('#lightboxPrev').addEventListener('click', e => { e.stopPropagation(); stepLightbox(-1); });
+  $('#lightboxNext').addEventListener('click', e => { e.stopPropagation(); stepLightbox(1); });
   lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
-  window.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+  window.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('is-open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') stepLightbox(1);
+    if (e.key === 'ArrowLeft') stepLightbox(-1);
+  });
 }
 
 /* Render the events page as soon as its data is available, then

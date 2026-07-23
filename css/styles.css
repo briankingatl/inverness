@@ -808,6 +808,34 @@ section {
   border-color: var(--accent);
   color: var(--accent);
 }
+.lightbox__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--cream);
+  font-size: 20px;
+  border: 1px solid rgba(243,240,235,0.35);
+  border-radius: 50%;
+  transition: border-color .3s var(--ease-quiet), color .3s var(--ease-quiet), opacity .3s var(--ease-quiet);
+}
+.lightbox__nav--prev { left: 1rem; }
+.lightbox__nav--next { right: 1rem; }
+.lightbox__nav:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.lightbox__nav[hidden] { display: none; }
+.lightbox__counter {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+  margin-top: 4px;
+  display: block;
+}
 
 /* Seasonal index table */
 .seasonal {

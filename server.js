@@ -212,7 +212,7 @@ app.post('/api/upload', (req, res) => {
       res.status(400).json({ error: 'No file uploaded' });
       return;
     }
-    const url = `/images/${path.basename(req.file.filename)}`;
+    const url = `images/${path.basename(req.file.filename)}`;
     res.json({ ok: true, url });
   });
 });
@@ -223,7 +223,7 @@ app.get('/api/images', (req, res) => {
   try {
     const files = fs.readdirSync(imagesDir)
       .filter(f => /\.(jpeg|jpg|png|gif|webp|svg)$/i.test(f))
-      .map(f => `/images/${path.basename(f)}`);
+      .map(f => `images/${path.basename(f)}`);
     res.json(files);
   } catch (err) {
     res.status(500).json({ error: 'Failed to list images' });

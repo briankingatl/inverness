@@ -146,11 +146,16 @@
             <input type="text" data-field="date" value="${esc(item.date || '')}" placeholder="e.g. Summer 2025">
           </div>
           <div class="form-group">
-            <label>Image URL</label>
+            <label>Image URL (cover photo)</label>
             <div class="image-picker-row">
-              <input type="text" data-field="image" value="${esc(item.image || '')}" placeholder="/images/photo.jpg">
+              <input type="text" data-field="image" value="${esc(item.image || '')}" placeholder="images/photo.jpg">
               <button class="image-picker-btn" onclick="window._openImagePicker(event, this)">Browse</button>
             </div>
+          </div>
+          <div class="form-group">
+            <label>Gallery Images (one per line, optional)</label>
+            <textarea data-field="images" rows="4" placeholder="images/photo1.jpg&#10;images/photo2.jpg">${esc((item.images || []).join('\n'))}</textarea>
+            <p class="field-hint">If set, clicking this photo opens a lightbox visitors can page through. Leave blank to show just the cover photo.</p>
           </div>
           <div class="form-group">
             <label>Alt Text</label>
@@ -185,7 +190,7 @@
 
   document.getElementById('addScrapbookBtn').addEventListener('click', () => {
     if (!eventsData.scrapbook) eventsData.scrapbook = [];
-    eventsData.scrapbook.push({ title: '', date: '', image: '', alt: '', top: '10%', left: '10%', rotation: '-3' });
+    eventsData.scrapbook.push({ title: '', date: '', image: '', images: [], alt: '', top: '10%', left: '10%', rotation: '-3' });
     renderScrapbookList();
   });
 
@@ -254,7 +259,11 @@
       const fields = entry.querySelectorAll('[data-field]');
       fields.forEach(f => {
         const field = f.dataset.field;
-        item[field] = f.value;
+        if (field === 'images') {
+          item.images = f.value.split('\n').map(s => s.trim()).filter(Boolean);
+        } else {
+          item[field] = f.value;
+        }
       });
     }
     // Read seasonal fields

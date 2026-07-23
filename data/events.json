@@ -8,7 +8,16 @@
     {
       "title": "Easter Egg Hunt",
       "date": "Easter",
-      "image": "https://www.invernesshoa.org/data/siteimages/Amenities/Social/social-tn1.jpg",
+      "image": "images/easter/Easter2024-171.webp",
+      "images": [
+        "images/easter/Easter2024-171.webp",
+        "images/easter/Easter2024-241.webp",
+        "images/easter/Easter2024-243.webp",
+        "images/easter/Easter2024-30.webp",
+        "images/easter/Easter2026-502.webp",
+        "images/easter/Easter2026-685.webp",
+        "images/easter/Easter2026-764.webp"
+      ],
       "alt": "Easter Celebration",
       "top": "4%",
       "left": "6%",
@@ -44,7 +53,7 @@
     {
       "title": "Kentucky Derby Party",
       "date": "First Saturday in May",
-      "image": "https://www.invernesshoa.org/data/siteimages/Amenities/Social/The%20Hosts.jpg",
+      "image": "images/derby-party/IMG_0764.webp",
       "alt": "The hosts",
       "top": "32%",
       "left": "38%",
@@ -53,11 +62,60 @@
     {
       "title": "Breakfast with Santa",
       "date": "Christmastime",
-      "image": "https://www.invernesshoa.org/data/siteimages/Amenities/Social/social-tn3.jpg",
+      "image": "images/christmas-with-santa/Santa2025-1001.webp",
+      "images": [
+        "images/christmas-with-santa/Inverness2024--2.webp",
+        "images/christmas-with-santa/Santa2025-1000.webp",
+        "images/christmas-with-santa/Santa2025-1001.webp",
+        "images/christmas-with-santa/Santa2025-1082.webp"
+      ],
       "alt": "Breakfast with Santa",
       "top": "55%",
       "left": "62%",
       "rotation": "7"
+    },
+    {
+      "title": "Casino Night",
+      "date": "Winter",
+      "image": "images/casino-night/476087068_10170934622105068_6921255828496462981_n.webp",
+      "images": [
+        "images/casino-night/476087068_10170934622105068_6921255828496462981_n.webp",
+        "images/casino-night/475748453_10170934622200068_449308270112716264_n.webp",
+        "images/casino-night/475842938_10170931172245068_978912252628023908_n.webp",
+        "images/casino-night/645233374_10162017710777038_2636937254759775046_n.webp"
+      ],
+      "alt": "Casino Night at the clubhouse",
+      "top": "60%",
+      "left": "5%",
+      "rotation": "6"
+    },
+    {
+      "title": "Halloween Decoration Contest",
+      "date": "Halloween",
+      "image": "images/halloween/520092422_10172173388140068_5930830780889270012_n.webp",
+      "images": [
+        "images/halloween/520092422_10172173388140068_5930830780889270012_n.webp",
+        "images/halloween/520537200_10172180369175068_8976962012006807181_n.webp",
+        "images/halloween/545386068_10172586130915068_4853363124042239080_n.webp",
+        "images/halloween/545615805_10172586047585068_4993282794884006154_n.webp"
+      ],
+      "alt": "Halloween decoration contest entries",
+      "top": "62%",
+      "left": "36%",
+      "rotation": "-7"
+    },
+    {
+      "title": "Christmas Decoration Contest",
+      "date": "December",
+      "image": "images/christmas-decorations/518175843_10172098021545068_886668555476554248_n.webp",
+      "images": [
+        "images/christmas-decorations/518175843_10172098021545068_886668555476554248_n.webp",
+        "images/christmas-decorations/518117295_10172098021500068_2570631644761637089_n.webp"
+      ],
+      "alt": "Christmas decoration contest entries",
+      "top": "58%",
+      "left": "68%",
+      "rotation": "5"
     }
   ],
   "seasonal": [
@@ -102,6 +160,24 @@
       "event": "Christmas Breakfast with Santa",
       "detail": "Donuts, hot cocoa, crafts, and a visit from Santa bring the kids together for a cozy morning they will remember.",
       "date": "Early December"
+    },
+    {
+      "num": "viii.",
+      "event": "Casino Night",
+      "detail": "Blackjack, craps, and poker tables take over the clubhouse for a night of friendly competition for chips, not cash.",
+      "date": "Winter"
+    },
+    {
+      "num": "ix.",
+      "event": "Halloween Decoration Contest",
+      "detail": "Residents deck out their front yards for Halloween, and the neighborhood votes on the best-decorated house.",
+      "date": "Halloween"
+    },
+    {
+      "num": "x.",
+      "event": "Christmas Decoration Contest",
+      "detail": "A neighborhood-wide lights and decorations contest each December, with a tour of the best-decorated homes.",
+      "date": "December"
     }
   ]
 }
