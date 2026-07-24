@@ -6,22 +6,32 @@
   },
   "scrapbook": [
     {
-      "title": "Easter Egg Hunt",
-      "date": "Easter",
-      "image": "images/easter/Easter2024-171.webp",
+      "title": "Halloween Decoration Contest",
+      "date": "Halloween",
+      "image": "images/halloween/520092422_10172173388140068_5930830780889270012_n.webp",
       "images": [
-        "images/easter/Easter2024-171.webp",
-        "images/easter/Easter2024-241.webp",
-        "images/easter/Easter2024-243.webp",
-        "images/easter/Easter2024-30.webp",
-        "images/easter/Easter2026-502.webp",
-        "images/easter/Easter2026-685.webp",
-        "images/easter/Easter2026-764.webp"
+        "images/halloween/520092422_10172173388140068_5930830780889270012_n.webp",
+        "images/halloween/520537200_10172180369175068_8976962012006807181_n.webp",
+        "images/halloween/545386068_10172586130915068_4853363124042239080_n.webp",
+        "images/halloween/545615805_10172586047585068_4993282794884006154_n.webp"
       ],
-      "alt": "Easter Celebration",
-      "top": "4%",
-      "left": "6%",
-      "rotation": "-9"
+      "alt": "Halloween decoration contest entries",
+      "top": "62%",
+      "left": "36%",
+      "rotation": "-7"
+    },
+    {
+      "title": "Christmas Decoration Contest",
+      "date": "December",
+      "image": "images/christmas-decorations/518175843_10172098021545068_886668555476554248_n.webp",
+      "images": [
+        "images/christmas-decorations/518175843_10172098021545068_886668555476554248_n.webp",
+        "images/christmas-decorations/518117295_10172098021500068_2570631644761637089_n.webp"
+      ],
+      "alt": "Christmas decoration contest entries",
+      "top": "58%",
+      "left": "68%",
+      "rotation": "5"
     },
     {
       "title": "Memorial Day Party",
@@ -60,6 +70,24 @@
       "rotation": "-3"
     },
     {
+      "title": "Easter Egg Hunt",
+      "date": "Easter",
+      "image": "images/easter/Easter2024-171.webp",
+      "images": [
+        "images/easter/Easter2024-171.webp",
+        "images/easter/Easter2024-241.webp",
+        "images/easter/Easter2024-243.webp",
+        "images/easter/Easter2024-30.webp",
+        "images/easter/Easter2026-502.webp",
+        "images/easter/Easter2026-685.webp",
+        "images/easter/Easter2026-764.webp"
+      ],
+      "alt": "Easter Celebration",
+      "top": "4%",
+      "left": "6%",
+      "rotation": "-9"
+    },
+    {
       "title": "Breakfast with Santa",
       "date": "Christmastime",
       "image": "images/christmas-with-santa/Santa2025-1001.webp",
@@ -71,7 +99,7 @@
       ],
       "alt": "Breakfast with Santa",
       "top": "55%",
-      "left": "62%",
+      "left": "55%",
       "rotation": "7"
     },
     {
@@ -88,34 +116,6 @@
       "top": "60%",
       "left": "5%",
       "rotation": "6"
-    },
-    {
-      "title": "Halloween Decoration Contest",
-      "date": "Halloween",
-      "image": "images/halloween/520092422_10172173388140068_5930830780889270012_n.webp",
-      "images": [
-        "images/halloween/520092422_10172173388140068_5930830780889270012_n.webp",
-        "images/halloween/520537200_10172180369175068_8976962012006807181_n.webp",
-        "images/halloween/545386068_10172586130915068_4853363124042239080_n.webp",
-        "images/halloween/545615805_10172586047585068_4993282794884006154_n.webp"
-      ],
-      "alt": "Halloween decoration contest entries",
-      "top": "62%",
-      "left": "36%",
-      "rotation": "-7"
-    },
-    {
-      "title": "Christmas Decoration Contest",
-      "date": "December",
-      "image": "images/christmas-decorations/518175843_10172098021545068_886668555476554248_n.webp",
-      "images": [
-        "images/christmas-decorations/518175843_10172098021545068_886668555476554248_n.webp",
-        "images/christmas-decorations/518117295_10172098021500068_2570631644761637089_n.webp"
-      ],
-      "alt": "Christmas decoration contest entries",
-      "top": "58%",
-      "left": "68%",
-      "rotation": "5"
     }
   ],
   "seasonal": [
