@@ -91,18 +91,30 @@ window.addEventListener('popstate', e => {
 const initialHash = (location.hash || '#home').replace('#', '') || 'home';
 router.go(initialHash, false);
 
-/* ============== NAV SCROLL STATE ============== */
+/* ============== NAV SCROLL STATE + PROGRESS + BACK-TO-TOP ============== */
 const nav = $('#nav');
+const progressEl = $('#scrollProgress');
+const toTop = $('#toTop');
 let ticking = false;
 window.addEventListener('scroll', () => {
   if (!ticking) {
     requestAnimationFrame(() => {
       nav.classList.toggle('is-scrolled', window.scrollY > 40);
+      if (progressEl) {
+        const doc = document.documentElement;
+        const max = doc.scrollHeight - doc.clientHeight;
+        progressEl.style.transform = `scaleX(${max > 0 ? Math.min(window.scrollY / max, 1) : 0})`;
+      }
+      if (toTop) toTop.classList.toggle('is-visible', window.scrollY > 700);
       ticking = false;
     });
     ticking = true;
   }
-});
+}, { passive: true });
+
+if (toTop) {
+  toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+}
 
 /* ============== MOBILE NAV ============== */
 const navToggle = $('#navToggle');
@@ -131,6 +143,50 @@ window.addEventListener('load', () => {
 
 // Set --i on hero lines
 $$('.hero__title .inner').forEach((el, i) => el.style.setProperty('--i', i));
+
+/* ============== SEASONAL THEME ============== */
+const SEASONS = {
+  spring: {
+    label: 'Spring · dogwoods',
+    note: 'Dogwoods are in bloom along Azalea Drive',
+    icon: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M8 8C8 5.6 9.7 3.8 8 2 6.3 3.8 8 5.6 8 8Z"/><path d="M8 8C10.4 8 12.2 6.3 14 8 12.2 9.7 10.4 8 8 8Z"/><path d="M8 8C8 10.4 6.3 12.2 8 14 9.7 12.2 8 10.4 8 8Z"/><path d="M8 8C5.6 8 3.8 9.7 2 8 3.8 6.3 5.6 8 8 8Z"/><circle cx="8" cy="8" r="0.9" fill="currentColor" stroke="none"/></svg>'
+  },
+  summer: {
+    label: 'Summer · pool season',
+    note: 'The Stingrays are in the water — laps until ten',
+    icon: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="2.7"/><path d="M8 1.2v1.9M8 12.9v1.9M1.2 8h1.9M12.9 8h1.9M3.2 3.2l1.3 1.3M11.5 11.5l1.3 1.3M12.8 3.2l-1.3 1.3M4.5 11.5l-1.3 1.3"/></svg>'
+  },
+  fall: {
+    label: 'Fall · festivals',
+    note: 'Fall Festival and Halloween festivities ahead',
+    icon: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" aria-hidden="true"><path d="M2.5 13.5C2.5 7.2 7.2 2.5 13.5 2.5c0 6.3-4.7 11-11 11Z"/><path d="M2.5 13.5C5.2 10.8 8.2 7.8 13.5 2.5"/></svg>'
+  },
+  winter: {
+    label: 'Winter · holidays',
+    note: 'Breakfast with Santa is around the corner',
+    icon: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" aria-hidden="true"><path d="M8 1.2v13.6M1.2 8h13.6M3.2 3.2l9.6 9.6M12.8 3.2l-9.6 9.6"/><path d="M8 1.2 6.6 3M8 1.2l1.4 1.8M8 14.8 6.6 13M8 14.8l1.4-1.8M1.2 8l1.8-1.4M1.2 8 3 9.4M14.8 8l-1.8-1.4M14.8 8 13 9.4"/></svg>'
+  }
+};
+
+function currentSeason() {
+  const m = new Date().getMonth();
+  if (m >= 2 && m <= 4) return 'spring';
+  if (m >= 5 && m <= 7) return 'summer';
+  if (m >= 8 && m <= 10) return 'fall';
+  return 'winter';
+}
+
+(function initSeasonTheme() {
+  const season = currentSeason();
+  const s = SEASONS[season];
+  document.documentElement.dataset.season = season;
+
+  const pill = $('#navSeason');
+  if (pill) {
+    pill.innerHTML = `${s.icon}<span>${s.label}</span>`;
+    pill.title = s.note;
+  }
+})();
 
 /* ============== REVEAL OBSERVER ============== */
 const revealObs = new IntersectionObserver((entries) => {
@@ -268,6 +324,28 @@ if (lightbox) {
     if (e.key === 'ArrowRight') stepLightbox(1);
     if (e.key === 'ArrowLeft') stepLightbox(-1);
   });
+
+  /* Swipe navigation on touch */
+  const lightboxFig = $('.lightbox__figure');
+  let swipeX = null;
+  lightboxFig.addEventListener('touchstart', e => {
+    swipeX = e.touches[0].clientX;
+    lightboxFig.style.transition = 'none';
+  }, { passive: true });
+  lightboxFig.addEventListener('touchmove', e => {
+    if (swipeX === null) return;
+    const dx = e.touches[0].clientX - swipeX;
+    lightboxFig.style.transform = `translateX(${(dx * 0.35).toFixed(1)}px)`;
+  }, { passive: true });
+  lightboxFig.addEventListener('touchend', e => {
+    lightboxFig.style.transition = '';
+    lightboxFig.style.transform = '';
+    if (swipeX !== null) {
+      const dx = e.changedTouches[0].clientX - swipeX;
+      if (Math.abs(dx) > 40) stepLightbox(dx < 0 ? 1 : -1);
+    }
+    swipeX = null;
+  }, { passive: true });
 }
 
 /* Render the events page as soon as its data is available, then

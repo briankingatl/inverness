@@ -35,6 +35,10 @@
 </head>
 <body>
 
+<!-- Scroll progress + film grain (decorative) -->
+<div class="progress" id="scrollProgress" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
 <!-- ============== NAV ============== -->
 <nav class="nav" id="nav">
 <a class="nav__brand" id="navBrand" href="#home" aria-label="Inverness home">
@@ -48,6 +52,7 @@
     <li><a class="nav__link" href="#location" data-nav="location">Location</a></li>
   </ul>
   <div class="nav__cta">
+    <span class="nav__season" id="navSeason"></span>
     <a class="nav__signin" href="https://portal.accessmgt.com/public" target="_blank" rel="noopener noreferrer">
       Resident Sign-In
     </a>
@@ -116,17 +121,17 @@
         </div>
 
         <div class="overview__enclaves">
-          <div class="enclave">
+          <div class="enclave" data-mark="I">
             <span class="enclave__count">Enclave I · Est. 1986</span>
             <span class="enclave__name">Inverness</span>
             <p class="enclave__desc">The original section, laid out along Azalea Drive. The clubhouse, pool, and tennis courts sit at its heart.</p>
           </div>
-          <div class="enclave">
+          <div class="enclave" data-mark="II">
             <span class="enclave__count">Enclave II</span>
             <span class="enclave__name">Riverview</span>
             <p class="enclave__desc">The lots grow larger as they approach the river bluff, with several backing directly onto the woodline of the Chattahoochee Nature Center.</p>
           </div>
-          <div class="enclave">
+          <div class="enclave" data-mark="III">
             <span class="enclave__count">Enclave III</span>
             <span class="enclave__name">Riverbluff</span>
             <p class="enclave__desc">The highest ground in the neighborhood, with the longest westerly views and the largest average lot size.</p>
@@ -170,7 +175,7 @@
         <div class="amenities__list">
 
           <article class="amenity">
-            <div class="amenity__media">
+            <div class="amenity__media" data-index="01">
 
               <img loading="lazy" decoding="async" src="images/clubhouse/clubhouse-front.webp" alt="The Inverness clubhouse">
             </div>
@@ -188,7 +193,7 @@
           </article>
 
           <article class="amenity amenity--reverse">
-            <div class="amenity__media">
+            <div class="amenity__media" data-index="02">
 
               <img loading="lazy" decoding="async" src="images/swim/PXL_20250529_221523773.webp" alt="Inverness Stingrays swim meet at the community pool">
             </div>
@@ -206,7 +211,7 @@
           </article>
 
           <article class="amenity">
-            <div class="amenity__media">
+            <div class="amenity__media" data-index="03">
 
               <img loading="lazy" decoding="async" src="images/tennis/IMG-20260504-WA0007.webp" alt="Tennis courts at Inverness">
             </div>
@@ -224,7 +229,7 @@
           </article>
 
           <article class="amenity amenity--reverse">
-            <div class="amenity__media">
+            <div class="amenity__media" data-index="04">
 
               <img loading="lazy" decoding="async" src="images/playground/IMG_20201205_170502.webp" alt="Playground at Inverness">
             </div>
@@ -242,7 +247,7 @@
           </article>
 
           <article class="amenity">
-            <div class="amenity__media">
+            <div class="amenity__media" data-index="05">
 
               <img loading="lazy" decoding="async" src="images/nature/IMG_20260718_120604.webp" alt="Deer in the wooded lots along the Chattahoochee Nature Center">
             </div>
@@ -360,6 +365,11 @@
   </figure>
   <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Next photo">&rarr;</button>
 </div>
+
+<!-- ============== BACK TO TOP ============== -->
+<button class="to-top" id="toTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
 
 <!-- ============== FOOTER ============== -->
 <footer>

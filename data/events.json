@@ -17,7 +17,7 @@
       ],
       "alt": "Halloween decoration contest entries",
       "top": "62%",
-      "left": "36%",
+      "left": "30%",
       "rotation": "-7"
     },
     {
@@ -30,8 +30,8 @@
       ],
       "alt": "Christmas decoration contest entries",
       "top": "58%",
-      "left": "68%",
-      "rotation": "5"
+      "left": "72%",
+      "rotation": "-3"
     },
     {
       "title": "Memorial Day Party",
@@ -47,7 +47,7 @@
       "date": "Halloween",
       "image": "https://www.invernesshoa.org/data/siteimages/Amenities/Social/social-tn4.jpg",
       "alt": "Halloween costumes and cocktails",
-      "top": "8%",
+      "top": "5%",
       "left": "65%",
       "rotation": "-6"
     },
@@ -65,8 +65,8 @@
       "date": "First Saturday in May",
       "image": "images/derby-party/IMG_0764.webp",
       "alt": "The hosts",
-      "top": "32%",
-      "left": "38%",
+      "top": "22%",
+      "left": "43%",
       "rotation": "-3"
     },
     {
@@ -105,7 +105,7 @@
     {
       "title": "Casino Night",
       "date": "Winter",
-      "image": "images/casino-night/476087068_10170934622105068_6921255828496462981_n.webp",
+      "image": "images/casino-night/475748453_10170934622200068_449308270112716264_n.webp",
       "images": [
         "images/casino-night/476087068_10170934622105068_6921255828496462981_n.webp",
         "images/casino-night/475748453_10170934622200068_449308270112716264_n.webp",
