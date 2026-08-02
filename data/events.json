@@ -2,7 +2,7 @@
   "intro": {
     "eyebrow": "The Calendar",
     "title": "Community gatherings with a neighborly spirit.",
-    "text": "Our Social Committee organizes a full season of neighborhood events for kids, parents, and anyone who enjoys good company. We kick things off with the Memorial Day Pool Party, featuring a DJ, live music, and a long, lazy lunch. Summer stays mellow with dive-in movie nights, and we stitch the year together with back-to-school socials, a Fall Festival, Halloween Costumes & Cocktails, and a cozy Breakfast with Santa. Watch the community messaging group for invites and sign-ups."
+    "text": "Our Social Committee organizes a full season of neighborhood events for kids, parents, and anyone who enjoys good company. We kick things off with the Memorial Day Pool Party, featuring a DJ, live music, and a long, lazy lunch. Summer stays mellow with dive-in movie nights, and we stitch the year together with back-to-school socials, a Fall Festival, Halloween Sweets & Treats, and a cozy Breakfast with Santa. Watch the community messaging group for invites and sign-ups."
   },
   "scrapbook": [
     {
@@ -43,10 +43,10 @@
       "rotation": "5"
     },
     {
-      "title": "Halloween Costumes & Cocktails",
+      "title": "Halloween Sweets & Treats",
       "date": "Halloween",
-      "image": "images/halloween-costumes/social-tn4.webp",
-      "alt": "Halloween costumes and cocktails",
+      "image": "images/halloween-sweets-treats/515543367_10161706127201596_3897219267733586843_n.webp",
+      "alt": "Halloween sweets and treats",
       "top": "5%",
       "left": "65%",
       "rotation": "-6"
@@ -54,11 +54,20 @@
     {
       "title": "Fall Festival",
       "date": "October",
-      "image": "images/fall-festival/social-tn2.webp",
+      "image": "images/fall-festival/515440846_10161706127206596_1282018087613564341_n.webp",
       "alt": "Fall Festival",
       "top": "36%",
       "left": "12%",
       "rotation": "11"
+    },
+    {
+      "title": "Dog Days of Summer",
+      "date": "Labor Day",
+      "image": "images/dog-days-summer/494697754_10101768709294733_2025493882560051368_n.webp",
+      "alt": "Dog Days of Summer pool party",
+      "top": "38%",
+      "left": "78%",
+      "rotation": "4"
     },
     {
       "title": "Kentucky Derby Party",
@@ -145,36 +154,42 @@
     },
     {
       "num": "v.",
+      "event": "Dog Days of Summer",
+      "detail": "One last splash before the pool closes for the season — pool games, floats, and frozen treats for the whole neighborhood.",
+      "date": "Labor Day"
+    },
+    {
+      "num": "vi.",
       "event": "Fall Festival",
       "detail": "Pumpkins, crafts, and seasonal treats make for a fun autumn afternoon with the neighborhood.",
       "date": "October"
     },
     {
-      "num": "vi.",
-      "event": "Halloween Costumes & Cocktails",
-      "detail": "An evening for adults with themed drinks and spirited costumes, offering a grown-up take on Halloween.",
+      "num": "vii.",
+      "event": "Halloween Sweets & Treats",
+      "detail": "A Halloween celebration of sweets and treats — candy, baked goods, and good company for the neighborhood.",
       "date": "Halloween"
     },
     {
-      "num": "vii.",
+      "num": "viii.",
       "event": "Christmas Breakfast with Santa",
       "detail": "Donuts, hot cocoa, crafts, and a visit from Santa bring the kids together for a cozy morning they will remember.",
       "date": "Early December"
     },
     {
-      "num": "viii.",
+      "num": "ix.",
       "event": "Casino Night",
       "detail": "Blackjack, craps, and poker tables take over the clubhouse for a night of friendly competition for chips, not cash.",
       "date": "Winter"
     },
     {
-      "num": "ix.",
+      "num": "x.",
       "event": "Halloween Decoration Contest",
       "detail": "Residents deck out their front yards for Halloween, and the neighborhood votes on the best-decorated house.",
       "date": "Halloween"
     },
     {
-      "num": "x.",
+      "num": "xi.",
       "event": "Christmas Decoration Contest",
       "detail": "A neighborhood-wide lights and decorations contest each December, with a tour of the best-decorated homes.",
       "date": "December"
