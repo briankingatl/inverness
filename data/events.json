@@ -36,7 +36,7 @@
     {
       "title": "Memorial Day Party",
       "date": "Memorial Day Weekend",
-      "image": "https://www.invernesshoa.org/data/siteimages/Amenities/Social/bkg-social1.jpg",
+      "image": "images/memorial-day/bkg-social1.webp",
       "alt": "Memorial Day party",
       "top": "2%",
       "left": "30%",
@@ -45,7 +45,7 @@
     {
       "title": "Halloween Costumes & Cocktails",
       "date": "Halloween",
-      "image": "https://www.invernesshoa.org/data/siteimages/Amenities/Social/social-tn4.jpg",
+      "image": "images/halloween-costumes/social-tn4.webp",
       "alt": "Halloween costumes and cocktails",
       "top": "5%",
       "left": "65%",
@@ -54,7 +54,7 @@
     {
       "title": "Fall Festival",
       "date": "October",
-      "image": "https://www.invernesshoa.org/data/siteimages/Amenities/Social/social-tn2.jpg",
+      "image": "images/fall-festival/social-tn2.webp",
       "alt": "Fall Festival",
       "top": "36%",
       "left": "12%",
@@ -178,6 +178,50 @@
       "event": "Christmas Decoration Contest",
       "detail": "A neighborhood-wide lights and decorations contest each December, with a tour of the best-decorated homes.",
       "date": "December"
+    }
+  ],
+  "roswell": [
+    {
+      "num": "i.",
+      "event": "Roswell Roots",
+      "detail": "One of the Southeast's largest Black History Month celebrations, with music, art, and culture across the city.",
+      "date": "February"
+    },
+    {
+      "num": "ii.",
+      "event": "Alive After Five",
+      "detail": "Canton Street closes to traffic for live music, food, and shopping on the third Friday of the month.",
+      "date": "April – October"
+    },
+    {
+      "num": "iii.",
+      "event": "Roswell Criterium",
+      "detail": "A professional bicycle race through the historic streets, with a kids' bike rodeo alongside.",
+      "date": "May"
+    },
+    {
+      "num": "iv.",
+      "event": "Memorial Day Ceremony",
+      "detail": "Roswell hosts what is billed as the largest Memorial Day ceremony in Georgia — our own pool party caps the same weekend.",
+      "date": "Memorial Day"
+    },
+    {
+      "num": "v.",
+      "event": "Riverside Sounds",
+      "detail": "Free outdoor concerts at Riverside Park's amphitheater, blankets and chairs welcome.",
+      "date": "May – October"
+    },
+    {
+      "num": "vi.",
+      "event": "Fireworks Extravaganza",
+      "detail": "The city's July 4 fireworks over the river draw families from across north Fulton.",
+      "date": "July 4"
+    },
+    {
+      "num": "vii.",
+      "event": "Roswell Wine Festival",
+      "detail": "A tasting festival on the grounds of historic Barrington Hall.",
+      "date": "First Sunday in October"
     }
   ]
 }

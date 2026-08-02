@@ -367,6 +367,15 @@
               <option value="true" ${item.primary ? 'selected' : ''}>Yes</option>
             </select>
           </div>
+          <div class="form-group">
+            <label>Category (map filter)</label>
+            <select data-field="cat">
+              <option value="outdoors" ${item.cat === 'outdoors' ? 'selected' : ''}>Outdoors</option>
+              <option value="culture" ${item.cat === 'culture' ? 'selected' : ''}>Culture</option>
+              <option value="essentials" ${item.cat === 'essentials' ? 'selected' : ''}>Essentials</option>
+              <option value="community" ${item.cat === 'community' ? 'selected' : ''}>Community</option>
+            </select>
+          </div>
           <div class="item-entry-actions">
             <button class="btn btn--danger" onclick="window._deletePoi(${i})">Remove</button>
           </div>
@@ -383,7 +392,7 @@
   document.getElementById('addPoiBtn').addEventListener('click', () => {
     poiData.push({
       name: '', num: '', desc: '', detail: '', lat: '', lng: '',
-      dist: '', cardDesc: '', cardMeta: '', primary: false
+      dist: '', cardDesc: '', cardMeta: '', primary: false, cat: 'outdoors'
     });
     renderPoiList();
   });

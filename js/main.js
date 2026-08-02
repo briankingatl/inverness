@@ -230,6 +230,7 @@ function renderEventsPage() {
   const intro = $('#eventsIntro');
   const scrapbook = $('#scrapbook');
   const seasonalRows = $('#seasonalRows');
+  const roswellRows = $('#roswellRows');
   if (!intro || !scrapbook || !seasonalRows || !data.events) return;
 
   const e = data.events;
@@ -258,6 +259,17 @@ function renderEventsPage() {
       <span class="seasonal__date">${item.date}</span>
     </div>
   `).join('');
+
+  if (roswellRows) {
+    roswellRows.innerHTML = (e.roswell || []).map(item => `
+      <div class="seasonal__row">
+        <span class="seasonal__num">${item.num}</span>
+        <span class="seasonal__event">${item.event}</span>
+        <span class="seasonal__detail">${item.detail}</span>
+        <span class="seasonal__date">${item.date}</span>
+      </div>
+    `).join('');
+  }
 }
 
 function initScrapbook() {
@@ -356,6 +368,54 @@ dataReady.events.then(() => {
 });
 
 /* ============== LOCATION — LEGEND & POI CARDS ============== */
+const POI_CATEGORIES = [
+  ['outdoors', 'Outdoors'],
+  ['culture', 'Culture'],
+  ['essentials', 'Essentials'],
+  ['community', 'Community']
+];
+let poiCat = 'all';
+
+function renderPoiFilters() {
+  const legend = $('#mapLegend');
+  if (!legend || !data.poi || legend.querySelector('.map-legend__filters')) return;
+
+  const cats = POI_CATEGORIES.filter(([key]) => data.poi.some(p => p.cat === key));
+  const chips = document.createElement('div');
+  chips.className = 'map-legend__filters';
+  chips.innerHTML = `<button class="map-legend__filter is-active" data-cat="all" type="button">All</button>` +
+    cats.map(([key, label]) =>
+      `<button class="map-legend__filter" data-cat="${key}" type="button">${label}</button>`
+    ).join('');
+
+  const title = legend.querySelector('.map-legend__title');
+  legend.insertBefore(chips, title.nextSibling);
+
+  chips.addEventListener('click', e => {
+    const btn = e.target.closest('.map-legend__filter');
+    if (!btn) return;
+    poiCat = btn.dataset.cat;
+    $$('.map-legend__filter').forEach(b => b.classList.toggle('is-active', b === btn));
+    applyPoiFilter();
+  });
+}
+
+function applyPoiFilter() {
+  if (!data.poi) return;
+  const show = poi => poiCat === 'all' || poi.cat === poiCat;
+  $$('.legend-item').forEach((l, i) => { l.style.display = show(data.poi[i]) ? '' : 'none'; });
+  $$('.poi-card').forEach((c, i) => { c.style.display = show(data.poi[i]) ? '' : 'none'; });
+  if (map) {
+    markers.forEach((m, i) => {
+      if (show(data.poi[i])) {
+        if (!map.hasLayer(m)) m.addTo(map);
+      } else if (map.hasLayer(m)) {
+        map.removeLayer(m);
+      }
+    });
+  }
+}
+
 function renderPoiContent() {
   const legend = $('#mapLegend');
   const poiDetails = $('#poiDetails');
@@ -385,6 +445,9 @@ function renderPoiContent() {
       <span class="poi-card__meta">${poi.cardMeta}</span>
     </div>
   `).join('');
+
+  // Category filter chips
+  renderPoiFilters();
 
   // Wire up legend interactions now that the items exist.
   $$('.legend-item').forEach((l, i) => {
