@@ -325,8 +325,8 @@ h1, h2, h3, h4 {
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(180deg, rgba(28,28,28,0.05) 0%, rgba(28,28,28,0) 28%, rgba(28,28,28,0) 60%, rgba(28,28,28,0.55) 100%),
-    linear-gradient(90deg, rgba(28,28,28,0.25) 0%, rgba(28,28,28,0) 50%);
+    linear-gradient(180deg, rgba(28,28,28,0.05) 0%, rgba(28,28,28,0) 30%, rgba(28,28,28,0.22) 62%, rgba(28,28,28,0.62) 100%),
+    linear-gradient(90deg, rgba(28,28,28,0.3) 0%, rgba(28,28,28,0) 55%);
 }
 
 .hero__content {
@@ -1768,6 +1768,16 @@ footer::before {
   .nav__season { display: none; }
   .hero { padding: 6rem 1.5rem 3rem; }
   .hero__title { font-size: clamp(2.7rem, 10vw, 4.2rem); }
+  /* Stronger scrim + text shadow on phones: the landscape image is
+     center-cropped and the area behind the text is comparatively bright */
+  .hero__overlay {
+    background:
+      linear-gradient(180deg, rgba(28,28,28,0.12) 0%, rgba(28,28,28,0) 20%, rgba(28,28,28,0.35) 50%, rgba(28,28,28,0.85) 100%);
+  }
+  .hero__eyebrow,
+  .hero__title,
+  .hero__sub { text-shadow: 0 1px 3px rgba(0,0,0,0.35), 0 2px 16px rgba(0,0,0,0.5); }
+  .hero__sub { color: rgba(243,240,235,0.96); font-weight: 400; }
   /* River Watch — compact strip at narrow widths */
   .river-watch { padding: 1.5rem 1.25rem; gap: 1.2rem; }
   .river-watch__sub { display: none; }
