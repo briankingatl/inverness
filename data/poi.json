@@ -33,7 +33,7 @@
     "desc": "A scenic boardwalk and paved multi-use trail along the Chattahoochee.",
     "detail": "Begins at the dam at Morgan Falls Park, follows the river, and extends eastward to connect with the Vickery Creek Trail and beyond.",
     "dist": "0.7 mi",
-    "cardDesc": "A scenic boardwalk and paved riverside trail beginning at Morgan Falls Park dam. The path winds alongside the Chattahoochee and extends 3+ miles eastward past the Vickery Creek Trail all the way to East Roswell, making it perfect for walking, running, and cycling.",
+    "cardDesc": "A scenic boardwalk and paved riverside trail beginning at Morgan Falls Park dam. The path winds alongside the Chattahoochee and extends 3+ miles eastward past the Vickery Creek Trail, making it perfect for walking, running, and cycling.",
     "cardMeta": "0.7 mi · 14 min walk · 5 min bike"
   },
   {
@@ -51,8 +51,8 @@
   {
     "num": "05",
     "name": "Downtown Roswell",
-    "lat": 34.0272,
-    "lng": -84.3615,
+    "lat": 34.02,
+    "lng": -84.3618,
     "cat": "culture",
     "desc": "Restaurants, shops, and galleries along Canton Street.",
     "detail": "The monthly Alive After Five street festival, April through October.",
@@ -141,7 +141,7 @@
     "desc": "Full-service hospital on Hospital Boulevard near GA 400.",
     "detail": "Emergency care and a full range of medical services, minutes north of Inverness.",
     "dist": "5.4 mi",
-    "cardDesc": "A full-service community hospital with emergency care and a broad range of medical services, located off Alpharetta Highway near GA 400. Children's Healthcare of Atlanta at Scottish Rite is roughly ten miles south for pediatric care.",
+    "cardDesc": "A full-service community hospital with emergency care and a broad range of medical services, located off Alpharetta Highway near GA 400. Children's Healthcare of Atlanta at Scottish Rite is roughly seven miles south for pediatric care.",
     "cardMeta": "5.4 mi · 15 min drive"
   },
   {
