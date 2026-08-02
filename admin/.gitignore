@@ -1,0 +1,4 @@
+# Admin-only: this folder is NOT deployed to the static host
+node_modules/
+.env
+*.log

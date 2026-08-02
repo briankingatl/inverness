@@ -1,8 +1,11 @@
-# Dependencies
+# Dependencies (needed locally by scripts/optimize-images.js)
 node_modules/
 
-# Local admin credentials
-.env
+# Local-only admin panel: tracked in git for versioning, but EXCLUDED
+# from the dist/ build (see scripts/build-site.js) so it never publishes.
+
+# Build output (this is what gets deployed)
+dist/
 
 # Logs
 *.log

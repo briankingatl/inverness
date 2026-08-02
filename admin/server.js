@@ -21,6 +21,9 @@ const { v4: uuidv4 } = require('uuid');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// The admin server lives in /admin; the static site + content live one level up.
+const ROOT = path.join(__dirname, '..');
+
 // Process-level unhandled error handling
 process.on('uncaughtException', (err) => console.error('UNCAUGHT EXCEPTION:', err));
 process.on('unhandledRejection', (err) => console.error('UNHANDLED REJECTION:', err));
@@ -59,10 +62,12 @@ function validateAuth(req, res) {
 
 // ── Middleware ──────────────────────────────────────────────────────
 app.use(express.json({ limit: '1mb' }));
+// Serve the admin panel first, then the static site (for previews and image URLs).
 app.use(express.static(path.join(__dirname)));
+app.use(express.static(ROOT));
 
 // ── Images upload storage ───────────────────────────────────────────
-const imagesDir = path.join(__dirname, 'images');
+const imagesDir = path.join(ROOT, 'images');
 if (!fs.existsSync(imagesDir)) {
   fs.mkdirSync(imagesDir, { recursive: true });
 }
@@ -91,7 +96,7 @@ const upload = multer({
 });
 
 // ── Data file helpers ───────────────────────────────────────────────
-const DATA_DIR = path.join(__dirname, 'data');
+const DATA_DIR = path.join(ROOT, 'data');
 
 function readJsonFile(filename) {
   const filePath = path.join(DATA_DIR, filename);
