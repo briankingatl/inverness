@@ -1123,8 +1123,17 @@ section {
   background: var(--cream);
   border: 1px solid rgba(28,28,28,0.08);
   border-radius: 2px;
+  container-type: inline-size;
+  container-name: riverwatch;
 }
 .river-watch__label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+.river-watch__head {
   display: flex;
   align-items: center;
   gap: 0.7rem;
@@ -1157,6 +1166,9 @@ section {
   letter-spacing: 0.02em;
   text-transform: none;
   color: var(--accent-text);
+  margin-left: 1.15rem;
+  max-width: 24ch;
+  line-height: 1.45;
 }
 .river-watch__stats {
   display: flex;
@@ -1721,9 +1733,6 @@ footer::before {
   }
   .overview__grid { grid-template-columns: 1fr; gap: 3rem; }
   .amenity { grid-template-columns: 1fr; gap: 2.5rem; padding: 3.5rem 0; }
-  .river-watch { flex-direction: column; align-items: flex-start; }
-  .river-watch__stats { gap: 1.8rem; }
-  .river-watch__updated { margin-left: 0; }
   .amenity--reverse .amenity__media { order: 0; }
   .map-wrap { grid-template-columns: 1fr; min-height: auto; }
   .map-canvas { aspect-ratio: 4/3; }
@@ -1736,11 +1745,32 @@ footer::before {
   .schools { grid-template-columns: 1fr 1fr; }
   .schools__image { grid-column: 1 / -1; aspect-ratio: 16/9; }
 }
+
+/* River Watch — holds its row layout until 800px, then stacks */
+@media (max-width: 800px) {
+  .river-watch { flex-direction: column; align-items: stretch; }
+  /* Condensed readings so all three fit on one line down to 500px */
+  .river-watch__stats { flex-wrap: wrap; gap: 1rem; justify-content: space-between; }
+  .river-watch__stat { gap: 0.25rem; }
+  .river-watch__num { font-size: 1.55rem; }
+  .river-watch__unit { font-size: 10px; }
+  .river-watch__sublabel { font-size: 9px; letter-spacing: 0.1em; margin-left: 0.2rem; }
+  .river-watch__updated { margin-left: 0; }
+}
+
+/* River Watch — mid band: the row wraps, but the readings span the strip */
+@media (min-width: 801px) and (max-width: 900px) {
+  .river-watch__stats { justify-content: space-between; }
+}
 @media (max-width: 720px) {
   section { padding: 5rem 1.5rem; }
   .nav { padding: 1rem 1.5rem; }
   .nav__season { display: none; }
   .hero { padding: 6rem 1.5rem 3rem; }
+  .hero__title { font-size: clamp(2.7rem, 10vw, 4.2rem); }
+  /* River Watch — compact strip at narrow widths */
+  .river-watch { padding: 1.5rem 1.25rem; gap: 1.2rem; }
+  .river-watch__sub { display: none; }
   .map-canvas { aspect-ratio: 1/1; min-height: 350px; }
   .hero__meta, .hero__scroll { display: none; }
   .nav__signin { font-size: 9px; letter-spacing: 0.14em; padding: 0.55rem 0.9rem; }
@@ -1801,6 +1831,19 @@ footer::before {
   .seasonal--city .seasonal__intro p { font-size: 13px; }
   .footer__grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
   .footer__bottom { flex-direction: column; align-items: flex-start; }
+}
+
+/* ============== RIVER WATCH (small screens) ============== */
+@media (max-width: 900px) {
+  /* Stacked layout: the readings own the strip — drop the timestamp */
+  .river-watch__updated { display: none; }
+}
+
+/* Hide the timestamp whenever the row layout has no room for it */
+@media (min-width: 801px) {
+  @container riverwatch (max-width: 940px) {
+    .river-watch__updated { display: none; }
+  }
 }
 
 /* ============== REDUCED MOTION ============== */
