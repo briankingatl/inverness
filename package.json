@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "setup": "node setup.js",
-    "start": "node server.js",
-    "dev": "node server.js"
+    "start": "node --env-file-if-exists=.env server.js",
+    "dev": "node --env-file-if-exists=.env server.js"
   },
   "dependencies": {
     "express": "^4.18.2",
