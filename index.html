@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Inverness | A peaceful life on the Chattahoochee, Roswell, Georgia</title>
 <meta name="description" content="A Homeowners Association of 260 homes across three enclaves, Inverness, Riverview, and Riverbluff, on the Chattahoochee River in Roswell, Georgia.">
 
@@ -24,16 +24,17 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Caveat:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@300;400;500&family=Caveat:wght@400&display=swap">
 
-<!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<!-- Leaflet CSS is loaded on demand with the map (js/main.js) -->
 
 <!-- Site styles -->
 <link rel="stylesheet" href="css/styles.css">
 
 </head>
 <body>
+
+<a class="skip-link" href="#app">Skip to content</a>
 
 <!-- Scroll progress + film grain (decorative) -->
 <div class="progress" id="scrollProgress" aria-hidden="true"></div>
@@ -52,17 +53,30 @@
     <li><a class="nav__link" href="#location" data-nav="location">Location</a></li>
   </ul>
   <div class="nav__cta">
-    <span class="nav__season" id="navSeason"></span>
-    <a class="nav__signin" href="https://portal.accessmgt.com/public" target="_blank" rel="noopener noreferrer">
-      Resident Sign-In
-    </a>
+    <button class="nav__season" id="navSeason" type="button"></button>
+    <div class="nav__signin-wrap">
+      <button class="nav__signin" id="navSignin" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="navSigninMenu">
+        Resident Sign-In
+        <svg class="nav__signin-caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
+      </button>
+      <div class="nav__signin-menu" id="navSigninMenu" role="menu" aria-label="Resident sign-in options">
+        <a href="https://portal.accessmgt.com/public" target="_blank" rel="noopener noreferrer" role="menuitem">
+          <span class="nav__signin-menu-title">Resident Portal</span>
+          <span class="nav__signin-menu-sub">Dues, documents &amp; reservations</span>
+        </a>
+        <a href="https://www.invernesshoa.org/MemberDefault.aspx" target="_blank" rel="noopener noreferrer" role="menuitem">
+          <span class="nav__signin-menu-title">Member Directory</span>
+          <span class="nav__signin-menu-sub">Community directory at InvernessHOA.org</span>
+        </a>
+      </div>
+    </div>
     <button class="nav__mobile-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
 
-<main id="app">
+<main id="app" tabindex="-1">
 
   <!-- ============== HOME PAGE ============== -->
   <div class="page is-active" data-page="home">
@@ -93,7 +107,7 @@
         <span class="hero__meta-row">84° 23′ 5.5″ W</span>
         <span class="hero__meta-row hero__meta-coord">Elevation 1053 ft</span>
       </div>
-      <div class="hero__scroll">
+      <div class="hero__scroll" aria-hidden="true">
         <span>Scroll</span>
         <span class="hero__scroll-line"></span>
       </div>
@@ -112,7 +126,7 @@
           <div class="overview__text">
             <p>The streets here take their names from what grows along them: Azalea, Camellia, Wisteria, Dogwood. The original plantings have had nearly forty years to do their work, and in April the canopy is so thick over Azalea Drive that afternoon light arrives in a green half-light, making the clubhouse seem to float in it.</p>
             <p>Inverness is in fact three enclaves under one trust: the original Inverness section, laid out in 1986; Riverview, where the lots grow larger as they approach the river bluff; and Riverbluff, the newest of the three, with the highest ground and the longest views. Two hundred and sixty homes in all, with covenants written to keep the streetscape consistent without erasing the personality of any one house.</p>
-            <p>What sets Inverness apart is less what is inside it than what is beside it. The Chattahoochee Nature Center is our next-door neighbor, and the river itself is a ten-minute walk through the woods. The historic Roswell square, with its mill ruins, Vickery Creek Trail, and variety of restaurants, is a half-hour walk or a quick bike ride in the other direction. In a real sense, we are surrounded by the kind of amenities most neighborhoods in metro Atlanta can only dream of.</p>
+            <p>What sets Inverness apart is less what is inside it than what is beside it. The Chattahoochee Nature Center is our next-door neighbor, and the river itself is a ten-minute walk through the woods. The historic Roswell square, with its mill ruins, Vickery Creek Trail, and variety of restaurants, is a half-hour walk or a quick bike ride in the other direction. Most neighborhoods in metro Atlanta drive to one of these on a good day. Here, they are all a walk or a short ride from home.</p>
           </div>
           <div class="overview__image-wrap">
             <img loading="lazy" decoding="async" src="images/vickery-mill-bridge/OldRoswellMillCoveredBridgeAndArt.webp" alt="The covered bridge at Vickery Mill in Roswell, Georgia">
@@ -213,7 +227,7 @@
         <div class="section-head">
           <div class="eyebrow"><span>The Grounds</span></div>
           <h2>Secluded grounds, maintained for resident enjoyment.</h2>
-          <p class="lead">Secluded within our beautifully maintained grounds are the clubhouse, pool, tennis courts, and playground. Whether you're taking laps in the five‑lane pool, joining a match on one of four lit courts, or hosting friends in the clubhouse, the amenities offer a relaxed, resort‑like atmosphere for residents and their guests. All facilities are maintained by the Trust and are available from dawn until 10 p.m.</p>
+          <p class="lead">Secluded within our beautifully maintained grounds are the clubhouse, pool, tennis courts, and playground. Whether you're taking laps in the five‑lane pool, joining a match on the tennis or pickleball courts, or hosting friends in the clubhouse, the amenities keep a relaxed, resort‑like atmosphere for residents and their guests. All facilities are maintained by the HOA and available from dawn until 10 p.m.</p>
         </div>
 
         <div class="amenities__list">
@@ -261,13 +275,13 @@
             </div>
             <div class="amenity__body">
               <span class="amenity__index">No. 03 · The Courts</span>
-              <h3 class="amenity__title">Tennis</h3>
-              <p class="amenity__desc">Four courts provide ample space for league play and casual matches. One court is marked for pickleball and can also accommodate informal basketball play. The courts were resurfaced in 2022 and include new fencing and a shaded viewing pergola. A regular Saturday morning doubles group plays year‑round, and courts may be reserved through the resident portal.</p>
+              <h3 class="amenity__title">Tennis &amp; Pickleball</h3>
+              <p class="amenity__desc">Three tennis courts provide ample space for league play and casual matches, alongside a dedicated pickleball court recently renovated from a former tennis court. The courts were resurfaced in 2022 and include new fencing and a shaded viewing pergola. A regular Saturday morning doubles group plays year‑round, and courts may be reserved through the resident portal.</p>
               <div class="amenity__specs">
                 <div class="amenity__spec"><span class="amenity__spec-label">Surface</span><span class="amenity__spec-value">Har-Tru</span></div>
-                <div class="amenity__spec"><span class="amenity__spec-label">Courts</span><span class="amenity__spec-value">4</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Tennis</span><span class="amenity__spec-value">3</span></div>
+                <div class="amenity__spec"><span class="amenity__spec-label">Pickleball</span><span class="amenity__spec-value">1</span></div>
                 <div class="amenity__spec"><span class="amenity__spec-label">Lights</span><span class="amenity__spec-value">Until 10p</span></div>
-                <div class="amenity__spec"><span class="amenity__spec-label">Resurfaced</span><span class="amenity__spec-value">2022</span></div>
               </div>
             </div>
           </article>
@@ -328,7 +342,7 @@
             <span>No.</span>
             <span>Occasion</span>
             <span class="col-detail">Notes</span>
-            <span class="col-date" style="text-align:right">Date</span>
+            <span class="col-date">Date</span>
           </div>
           <div id="seasonalRows"></div>
         </div>
@@ -343,7 +357,7 @@
             <span>No.</span>
             <span>Occasion</span>
             <span class="col-detail">Notes</span>
-            <span class="col-date" style="text-align:right">Date</span>
+            <span class="col-date">Date</span>
           </div>
           <div id="roswellRows"></div>
         </div>
@@ -416,12 +430,17 @@
             <div class="at-a-glance__item"><span class="at-a-glance__dest">Chattahoochee Nature Center</span><span class="at-a-glance__time">8 min walk</span></div>
             <div class="at-a-glance__item"><span class="at-a-glance__dest">Historic Roswell square</span><span class="at-a-glance__time">7 min bike</span></div>
             <div class="at-a-glance__item"><span class="at-a-glance__dest">GA 400 &middot; Holcomb Bridge Rd</span><span class="at-a-glance__time">10 min drive</span></div>
-            <div class="at-a-glance__item"><span class="at-a-glance__dest">MARTA North Springs</span><span class="at-a-glance__time">15 min drive</span></div>
-            <div class="at-a-glance__item"><span class="at-a-glance__dest">North Fulton Hospital</span><span class="at-a-glance__time">15 min drive</span></div>
-            <div class="at-a-glance__item"><span class="at-a-glance__dest">Avalon &middot; Alpharetta</span><span class="at-a-glance__time">20 min drive</span></div>
             <div class="at-a-glance__item"><span class="at-a-glance__dest">Downtown Atlanta</span><span class="at-a-glance__time">30 min drive</span></div>
-            <div class="at-a-glance__item"><span class="at-a-glance__dest">Hartsfield&ndash;Jackson Int'l</span><span class="at-a-glance__time">45 min drive</span></div>
           </div>
+          <details class="at-a-glance__more">
+            <summary>Four more destinations</summary>
+            <div class="at-a-glance__grid at-a-glance__grid--more">
+              <div class="at-a-glance__item"><span class="at-a-glance__dest">MARTA North Springs</span><span class="at-a-glance__time">15 min drive</span></div>
+              <div class="at-a-glance__item"><span class="at-a-glance__dest">North Fulton Hospital</span><span class="at-a-glance__time">15 min drive</span></div>
+              <div class="at-a-glance__item"><span class="at-a-glance__dest">Avalon &middot; Alpharetta</span><span class="at-a-glance__time">20 min drive</span></div>
+              <div class="at-a-glance__item"><span class="at-a-glance__dest">Hartsfield&ndash;Jackson Int'l</span><span class="at-a-glance__time">45 min drive</span></div>
+            </div>
+          </details>
         </div>
 
         <!-- SCHOOLS & FAMILY LIFE -->
@@ -429,23 +448,33 @@
           <div class="schools__text">
             <div class="eyebrow"><span>Schools &amp; Family Life</span></div>
             <h3>Public and private schools, all minutes away</h3>
-            <p>Inverness is served by the Roswell North Elementary, Crabapple Middle, and Roswell High pipeline &mdash; the public schools set to serve the neighborhood for the foreseeable future. St. Francis Schools' Willeo Road campus sits right next door, with High Meadows, Fellowship Christian, Queen of Angels, Blessed Trinity, and Atlanta Academy all within a few minutes.</p>
+            <p>The public pipeline &mdash; Roswell North Elementary, Crabapple Middle, and Roswell High &mdash; is set to serve the neighborhood for the foreseeable future. St. Francis Schools' Willeo Road campus sits right next door; High Meadows, Fellowship Christian, Queen of Angels, Blessed Trinity, and Atlanta Academy are all within a few minutes.</p>
           </div>
           <div class="schools__list">
+            <div class="schools__group">
+              <h4 class="schools__group-title">The public pipeline</h4>
             <div class="school"><span class="school__name">Roswell North Elementary &middot; Public</span><span class="school__dist">~2.3 mi</span></div>
             <div class="school"><span class="school__name">Crabapple Middle School &middot; Public</span><span class="school__dist">~2.6 mi</span></div>
             <div class="school"><span class="school__name">Roswell High School &middot; Public</span><span class="school__dist">~4 mi</span></div>
+            </div>
+            <div class="schools__group">
+              <h4 class="schools__group-title">Private &amp; independent nearby</h4>
             <div class="school"><span class="school__name">St. Francis Schools &middot; K&ndash;12</span><span class="school__dist">Next door &middot; Willeo Rd</span></div>
             <div class="school"><span class="school__name">High Meadows School &middot; K&ndash;8</span><span class="school__dist">~0.7 mi</span></div>
             <div class="school"><span class="school__name">Fellowship Christian School &middot; K&ndash;12</span><span class="school__dist">~3 mi</span></div>
             <div class="school"><span class="school__name">Queen of Angels Catholic &middot; K&ndash;8</span><span class="school__dist">~3.5 mi</span></div>
             <div class="school"><span class="school__name">Blessed Trinity Catholic HS &middot; 9&ndash;12</span><span class="school__dist">~4 mi</span></div>
             <div class="school"><span class="school__name">Atlanta Academy &middot; PK&ndash;8</span><span class="school__dist">~4 mi</span></div>
+            </div>
           </div>
           <div class="schools__image">
             <img loading="lazy" decoding="async" src="images/roswell/rhs-main.webp" alt="The main entrance of Roswell High School">
             <div class="schools__caption">Roswell High School &middot; main entrance</div>
           </div>
+        </div>
+
+        <div class="location__postscript" data-reveal>
+          <p>The river is a ten-minute walk through the woods; the square, a short ride in the other direction. Neither is far, and neither gets old.</p>
         </div>
       </div>
     </section>
@@ -455,12 +484,12 @@
 </main>
 
 <!-- ============== LIGHTBOX (scrapbook photos) ============== -->
-<div class="lightbox" id="lightbox">
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo gallery">
   <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Previous photo">&larr;</button>
   <figure class="lightbox__figure">
     <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
     <img id="lightboxImg" src="" alt="">
-    <figcaption class="lightbox__caption">
+    <figcaption class="lightbox__caption" aria-live="polite">
       <span class="lightbox__title" id="lightboxTitle"></span>
       <span class="lightbox__date" id="lightboxDate"></span>
       <span class="lightbox__counter" id="lightboxCounter"></span>
@@ -499,6 +528,7 @@
       <div class="footer__col-title">Residents</div>
       <ul>
         <li><a href="https://portal.accessmgt.com/public" target="_blank" rel="noopener noreferrer">Resident Portal</a></li>
+        <li><a href="https://www.invernesshoa.org/MemberDefault.aspx" target="_blank" rel="noopener noreferrer">Member Directory</a></li>
         <li><a href="https://reservemycourt.com/login" target="_blank" rel="noopener noreferrer">Book a Court</a></li>
         <li><a href="https://portal.accessmgt.com/community/reservations" target="_blank" rel="noopener noreferrer">Reserve the Clubhouse</a></li>
         <li><a href="https://portal.accessmgt.com/community/documents/" target="_blank" rel="noopener noreferrer">Dues &amp; Documents</a></li>
@@ -517,13 +547,12 @@
     </div>
   </div>
   <div class="footer__bottom">
-    <span>© 2026 Inverness HOA · Roswell, Georgia</span>
+    <span>© <span id="footerYear">2026</span> Inverness HOA · Roswell, Georgia</span>
     <span>A quiet address on the Chattahoochee</span>
   </div>
 </footer>
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Leaflet JS is loaded on demand with the map (js/main.js) -->
 <!-- main scripts -->
 <script src="js/main.js"></script>
 

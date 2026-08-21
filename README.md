@@ -36,7 +36,7 @@ deployed output.
 
 - **Node 22.9+** (developed on Node 24) — only needed for the admin server and
   the build script. The site itself is pure static HTML/CSS/JS.
-- No npm dependencies are required for the site build.
+- The build uses `sharp` (declared as a devDependency) to re-encode images.
 
 ## Local admin panel (the only way to edit content)
 
@@ -87,12 +87,36 @@ level up, so keep it as a sibling of `data/` and `images/`.
 ## Deployment
 
 ```bash
+npm install        # first time only (pulls sharp for image conversion)
 npm run build
 ```
 
-stages the deployable site into **`dist/`** — a byte-exact copy of the site
-with `admin/`, `scripts/`, and other local-only files removed. `dist/` is
-gitignored (build output). Point your host's publish directory at `dist/`:
+stages the deployable site into **`dist/`**, shaped for hosts that refuse to
+serve `.js`, `.json`, or `.webp` files (only `index.html` and `.png` files are
+ever emitted):
+
+```
+dist/
+├── index.html   Single self-contained page — css, js, and the events/POI
+│                data are inlined (no .js/.css/.json files at all).
+└── images/      Every raster re-encoded as a real PNG; the site's image
+                 references are rewritten to match.
+```
+
+- JS and JSON never touch the network: the build injects `js/main.js` and
+  `data/*.json` into the HTML (the JSON lives in `<script type="application/json">`
+  blocks that `main.js` reads first, falling back to fetch in dev).
+- Images are converted with sharp to 256-color palette PNGs (dithering on) —
+  genuinely valid `.png` files, ~3-4x smaller than lossless PNG. For lossless
+  output, change `convertToPng` in `scripts/build-site.js` to
+  `sharp(src).png({ compressionLevel: 9 })`. When a photo exists in several
+  formats (e.g. `clubhouse-front.png` + `.webp`), the format the site
+  references wins.
+- `scripts/verify-dist.js` sanity-checks the output: inline JSON parses,
+  every image reference resolves to a real file.
+
+`dist/` is gitignored (build output). Point your host's publish directory at
+`dist/`:
 
 | Host | Build command | Publish directory |
 |---|---|---|

@@ -5,5 +5,8 @@
   "description": "Inverness HOA static site. Admin panel lives in /admin (local-only, excluded from dist/).",
   "scripts": {
     "build": "node scripts/build-site.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.3"
   }
 }

@@ -8,25 +8,41 @@ const data = {
   poi: null
 };
 
+/* Read a <script type="application/json" id="..."> block. The dist/ build
+   inlines the data files into the page this way, so no .json files ever
+   need to be fetched from the host. */
+function inlineJSON(id) {
+  const el = document.getElementById(id);
+  if (!el || !el.textContent.trim()) throw new Error(`inline data #${id} missing`);
+  return JSON.parse(el.textContent);
+}
+
+/* Load a dataset: use the inlined copy when the build embedded one,
+   otherwise fetch the .json file (source mode / local admin preview). */
+function loadJSON(url, inlineId) {
+  if (document.getElementById(inlineId)) {
+    return Promise.resolve().then(() => inlineJSON(inlineId));
+  }
+  return fetch(url)
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .catch(err => { console.warn(`${url} fetch failed, using inline data`, err); return inlineJSON(inlineId); });
+}
+
 /* Promises that resolve when each dataset has loaded. */
 const dataReady = {
-  events: fetch('data/events.json')
-    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .catch(err => { console.warn('events.json fetch failed, using inline data', err); return inlineJSON('eventsData'); })
-    .then(d => { data.events = d; }),
-  poi: fetch('data/poi.json')
-    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .catch(err => { console.warn('poi.json fetch failed, using inline data', err); return inlineJSON('poiData'); })
-    .then(d => { data.poi = d; })
+  events: loadJSON('data/events.json', 'eventsData').then(d => { data.events = d; }),
+  poi: loadJSON('data/poi.json', 'poiData').then(d => { data.poi = d; })
 };
 
 /* ============== PAGE ROUTER ============== */
 const router = {
   current: null,
   pages: $$('.page'),
+  scrollMemory: {},
 
   go(page, push = true) {
     if (!page || page === this.current) return;
+    if (this.current) this.scrollMemory[this.current] = window.scrollY;
     this.pages.forEach(p => p.classList.toggle('is-active', p.dataset.page === page));
     $$('.nav__link').forEach(l => l.classList.toggle('is-active', l.dataset.nav === page));
     this.current = page;
@@ -37,7 +53,7 @@ const router = {
       location:  'Location | Inverness HOA, Roswell, Georgia'
     };
     if (titles[page]) document.title = titles[page];
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({ top: push ? 0 : (this.scrollMemory[page] || 0), behavior: 'instant' });
 
     requestAnimationFrame(() => {
       $$('[data-reveal]').forEach(el => {
@@ -54,7 +70,17 @@ const router = {
       }
     });
 
-    if (push) history.pushState({ page }, '', `#${page}`);
+    if (push) {
+      const target = `#${page}`;
+      try {
+        history.pushState({ page }, '', target);
+      } catch (err) {
+        /* file:// previews (and some sandboxed hosts) forbid pushState;
+           fall back to the hash, which still navigates and is recorded
+           in history. */
+        location.hash = target;
+      }
+    }
   }
 };
 
@@ -126,6 +152,28 @@ navToggle.addEventListener('click', e => {
   navToggle.setAttribute('aria-expanded', String(open));
 });
 
+/* ============== RESIDENT SIGN-IN DROPDOWN ============== */
+const signinWrap = $('.nav__signin-wrap');
+const signinBtn  = $('#navSignin');
+if (signinWrap && signinBtn) {
+  const closeSignin = () => {
+    signinWrap.classList.remove('is-open');
+    signinBtn.setAttribute('aria-expanded', 'false');
+  };
+  signinBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    const open = signinWrap.classList.toggle('is-open');
+    signinBtn.setAttribute('aria-expanded', String(open));
+  });
+  document.addEventListener('click', e => {
+    if (!signinWrap.contains(e.target)) closeSignin();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeSignin();
+  });
+  signinWrap.querySelectorAll('a').forEach(a => a.addEventListener('click', closeSignin));
+}
+
 /* ============== HERO ENTRANCE ============== */
 window.addEventListener('load', () => {
   const hero = $('.hero');
@@ -185,6 +233,7 @@ function currentSeason() {
   if (pill) {
     pill.innerHTML = `${s.icon}<span>${s.label}</span>`;
     pill.title = s.note;
+    pill.addEventListener('click', () => router.go('events'));
   }
 })();
 
@@ -242,7 +291,7 @@ function renderEventsPage() {
   `;
 
   scrapbook.innerHTML = e.scrapbook.map(item => `
-    <div class="polaroid" style="top: ${item.top}; left: ${item.left};" data-rotation="${item.rotation}" data-title="${item.title}" data-date="${item.date}">
+    <div class="polaroid" tabindex="0" role="button" style="top: ${item.top}; left: ${item.left};" data-rotation="${item.rotation}" data-title="${item.title}" data-date="${item.date}">
       <img loading="lazy" decoding="async" src="${item.image}" alt="${item.alt}">
       <div class="polaroid__caption">
         <span class="polaroid__title">${item.title}</span>
@@ -286,6 +335,13 @@ function initScrapbook() {
       const gallery = (item.images && item.images.length) ? item.images : [item.image];
       openLightbox(gallery, gallery.indexOf(item.image), item.title, item.date);
     });
+
+    p.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        p.click();
+      }
+    });
   });
 }
 
@@ -295,6 +351,7 @@ let lightboxGallery = [];
 let lightboxIndex = 0;
 let lightboxTitle = '';
 let lightboxDate = '';
+let lightboxLastFocus = null;
 
 function openLightbox(gallery, startIndex, title, date) {
   if (!lightbox) return;
@@ -305,6 +362,8 @@ function openLightbox(gallery, startIndex, title, date) {
   renderLightboxImage();
   lightbox.classList.add('is-open');
   document.body.style.overflow = 'hidden';
+  lightboxLastFocus = document.activeElement;
+  $('#lightboxClose').focus();
 }
 function renderLightboxImage() {
   const multi = lightboxGallery.length > 1;
@@ -314,6 +373,11 @@ function renderLightboxImage() {
   $('#lightboxCounter').textContent = multi ? `${lightboxIndex + 1} / ${lightboxGallery.length}` : '';
   $('#lightboxPrev').hidden = !multi;
   $('#lightboxNext').hidden = !multi;
+  if (multi) {
+    /* Preload adjacent images so stepping is instant */
+    [(lightboxIndex + 1) % lightboxGallery.length, (lightboxIndex - 1 + lightboxGallery.length) % lightboxGallery.length]
+      .forEach(i => { const img = new Image(); img.src = lightboxGallery[i]; });
+  }
 }
 function stepLightbox(delta) {
   if (lightboxGallery.length < 2) return;
@@ -324,12 +388,25 @@ function closeLightbox() {
   if (!lightbox) return;
   lightbox.classList.remove('is-open');
   document.body.style.overflow = '';
+  if (lightboxLastFocus && typeof lightboxLastFocus.focus === 'function') lightboxLastFocus.focus();
+  lightboxLastFocus = null;
 }
 if (lightbox) {
   $('#lightboxClose').addEventListener('click', closeLightbox);
   $('#lightboxPrev').addEventListener('click', e => { e.stopPropagation(); stepLightbox(-1); });
   $('#lightboxNext').addEventListener('click', e => { e.stopPropagation(); stepLightbox(1); });
   lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+
+  /* Trap Tab focus inside the open lightbox */
+  lightbox.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    const focusables = Array.from(lightbox.querySelectorAll('button:not([hidden])'));
+    if (!focusables.length) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
   window.addEventListener('keydown', e => {
     if (!lightbox.classList.contains('is-open')) return;
     if (e.key === 'Escape') closeLightbox();
@@ -404,7 +481,7 @@ function applyPoiFilter() {
   if (!data.poi) return;
   const show = poi => poiCat === 'all' || poi.cat === poiCat;
   $$('.legend-item').forEach((l, i) => { l.style.display = show(data.poi[i]) ? '' : 'none'; });
-  $$('.poi-card').forEach((c, i) => { c.style.display = show(data.poi[i]) ? '' : 'none'; });
+  $$('.poi-group').forEach(g => { g.style.display = (poiCat === 'all' || g.dataset.cat === poiCat) ? '' : 'none'; });
   if (map) {
     markers.forEach((m, i) => {
       if (show(data.poi[i])) {
@@ -426,7 +503,7 @@ function renderPoiContent() {
   legend.innerHTML = '';
   legend.appendChild(legendTitle);
   legend.insertAdjacentHTML('beforeend', data.poi.map((poi, i) => `
-    <div class="legend-item${i === 0 ? ' is-active' : ''}" data-poi="${i}">
+    <div class="legend-item${i === 0 ? ' is-active' : ''}" data-poi="${i}" tabindex="0" role="button">
       <div class="legend-item__head">
         <span class="legend-item__num">${poi.num}</span>
         <span class="legend-item__name">${poi.name}</span>
@@ -436,15 +513,24 @@ function renderPoiContent() {
     </div>
   `).join(''));
 
-  // POI detail cards
-  poiDetails.innerHTML = data.poi.map(poi => `
-    <div class="poi-card">
-      <span class="poi-card__num">${poi.num}</span>
-      <span class="poi-card__name">${poi.name}</span>
-      <p class="poi-card__desc">${poi.cardDesc}</p>
-      <span class="poi-card__meta">${poi.cardMeta}</span>
-    </div>
-  `).join('');
+  // POI detail cards, grouped by category
+  poiDetails.innerHTML = POI_CATEGORIES
+    .filter(([key]) => data.poi.some(p => p.cat === key))
+    .map(([key, label]) => `
+      <div class="poi-group" data-cat="${key}">
+        <h4 class="poi-group__head">${label}</h4>
+        <div class="poi-group__grid">
+          ${data.poi.filter(p => p.cat === key).map(poi => `
+            <div class="poi-card">
+              <span class="poi-card__num">${poi.num}</span>
+              <span class="poi-card__name">${poi.name}</span>
+              <p class="poi-card__desc">${poi.cardDesc}</p>
+              <span class="poi-card__meta">${poi.cardMeta}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
 
   // Category filter chips
   renderPoiFilters();
@@ -453,12 +539,35 @@ function renderPoiContent() {
   $$('.legend-item').forEach((l, i) => {
     l.addEventListener('mouseenter', () => highlightPoi(i));
     l.addEventListener('click', () => highlightPoi(i));
+    l.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        highlightPoi(i);
+      }
+    });
   });
 }
 
 /* ============== LEAFLET MAP ============== */
 let map = null;
 let markers = [];
+let leafletRetried = false;
+
+/* Load Leaflet's CSS and JS only when the map is first needed. */
+function ensureLeaflet() {
+  if (typeof L !== 'undefined') return Promise.resolve(true);
+  const css = document.createElement('link');
+  css.rel = 'stylesheet';
+  css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+  document.head.appendChild(css);
+  return new Promise(resolve => {
+    const s = document.createElement('script');
+    s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    s.onload = () => resolve(true);
+    s.onerror = () => resolve(false);
+    document.head.appendChild(s);
+  });
+}
 
 async function initMap() {
   if (map) return; // Already initialized
@@ -466,6 +575,30 @@ async function initMap() {
   if (map) return; // Re-check after awaiting data
   const poiData = data.poi;
   if (!poiData) return;
+
+  const leafletOk = await ensureLeaflet();
+  if (map) return; // Re-check after the async load
+  const canvas = $('#mapCanvas');
+  if (!leafletOk) {
+    if (canvas) {
+      let err = canvas.querySelector('.map-error');
+      if (!err) {
+        err = document.createElement('p');
+        err.className = 'map-error';
+        canvas.appendChild(err);
+      }
+      err.textContent = 'The map could not be loaded — try again shortly.';
+    }
+    if (!leafletRetried) {
+      leafletRetried = true;
+      setTimeout(() => { if (!map) initMap(); }, 12000); // one quiet retry
+    }
+    return;
+  }
+  if (canvas) {
+    const errEl = canvas.querySelector('.map-error');
+    if (errEl) errEl.remove();
+  }
 
   map = L.map('leafletMap', {
     scrollWheelZoom: false,
@@ -623,3 +756,13 @@ const kenObs = new IntersectionObserver(entries => {
   });
 });
 $$('.hero__bg img, .overview__image-wrap img').forEach(img => kenObs.observe(img));
+
+/* ============== PAUSE GRAIN WHEN TAB HIDDEN ============== */
+document.addEventListener('visibilitychange', () => {
+  const grain = $('.grain');
+  if (grain) grain.style.animationPlayState = document.hidden ? 'paused' : 'running';
+});
+
+/* ============== FOOTER YEAR ============== */
+const footerYear = $('#footerYear');
+if (footerYear) footerYear.textContent = new Date().getFullYear();
